@@ -84,7 +84,7 @@ const EXPO = [0.16, 1, 0.3, 1];
 const SMOOTH = [0.25, 0.46, 0.45, 0.94];
 
 // ─── MARQUEE ─────────────────────────────────────────────────────────────────
-function MarqueeRow({ items }) {
+function MarqueeRow({ items }: { items: string[] }) {
   const doubled = [...items, ...items, ...items, ...items, ...items];
   return (
     <div className="overflow-hidden py-5 border-y" style={{ borderColor: "rgba(192,57,43,0.25)" }}>
@@ -104,7 +104,7 @@ function MarqueeRow({ items }) {
 }
 
 // ─── FADE-IN SECTION ─────────────────────────────────────────────────────────
-function FadeUp({ children, delay = 0, className = "" }) {
+function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-8%" });
   return (
@@ -121,7 +121,7 @@ function FadeUp({ children, delay = 0, className = "" }) {
 }
 
 // ─── ANIMATED NUMBER ─────────────────────────────────────────────────────────
-function AnimatedStat({ value }) {
+function AnimatedStat({ value }: { value: string }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const isPercent = value.endsWith("%");
@@ -145,7 +145,6 @@ function AnimatedStat({ value }) {
     </span>
   );
 }
-
 // ─── NOISE TEXTURE SVG DATA URI ───────────────────────────────────────────────
 const NOISE_BG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`;
 
