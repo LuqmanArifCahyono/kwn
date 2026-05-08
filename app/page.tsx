@@ -62,49 +62,66 @@ const PASAL = [
 ];
 
 const MEMBERS = [
-  { name: "Sebastian Kevin H.", role: "Developer / Concept", img: "/chaewon.jpg" },
-  { name: "M. Luqman Arif C.", role: "Developer / Concept", img: "/tities.png" },
-  { name: "Rayya", role: "UI/UX & Design", img: "/chaewon.jpg" },
-  { name: "Qowwim", role: "Research & Data", img: "/chaewon.jpg" },
-  { name: "Fauzan", role: "Content & Copywriter", img: "/chaewon.jpg" },
+  { name: "Sebastian Kevin H.", role: "Developer / Concept", img: "/chaewon.jpg", fullContent: "Bertanggung jawab atas arsitektur kode, interaksi 3D, dan logika animasi di dalam website. Memastikan performa tetap stabil meskipun menggunakan banyak efek visual tingkat tinggi." },
+  { name: "M. Luqman Arif C.", role: "Developer / Concept", img: "/tities.png", fullContent: "Mengonsep struktur data, pengelolaan state, serta integrasi komponen UI. Ikut merancang alur pengalaman pengguna agar pesan dari setiap materi tersampaikan dengan baik." },
+  { name: "Rayya", role: "UI/UX & Design", img: "/chaewon.jpg", fullContent: "Mendesain antarmuka pengguna (UI) dan pengalaman pengguna (UX) secara menyeluruh. Menentukan palet warna, tipografi, dan layout dasar agar website terlihat modern dan profesional." },
+  { name: "Qowwim", role: "Research & Data", img: "/chaewon.jpg", fullContent: "Melakukan riset mendalam terkait pasal-pasal, batasan hukum, dan menyusun kuesioner. Memastikan seluruh data yang disajikan akurat dan dapat dipertanggungjawabkan." },
+  { name: "Fauzan", role: "Content & Copywriter", img: "/chaewon.jpg", fullContent: "Menyusun teks (copywriting) yang ada di dalam website. Menerjemahkan bahasa hukum dan riset yang kaku menjadi narasi yang mudah dipahami oleh masyarakat umum." },
 ];
 
 const SCREENSHOTS = [
-  { id: 1, label: "Data Bukti 01" },
-  { id: 2, label: "Data Bukti 02" },
-  { id: 3, label: "Data Bukti 03" },
+  { id: 1, label: "Data Bukti 01", img: "/chaewon.jpg", desc: "Tangkapan layar artikel berita atau postingan media sosial yang menunjukkan fenomena pembatasan opini publik dan kebebasan berekspresi di platform digital." },
+  { id: 2, label: "Data Bukti 02", img: "/chaewon.jpg", desc: "Dokumen PDF surat edaran atau regulasi yang menjadi perdebatan di kalangan netizen mengenai batasan hukum saat beropini di internet." },
+  { id: 3, label: "Data Bukti 03", img: "/chaewon.jpg", desc: "Statistik penyebaran disinformasi dan ujaran kebencian yang memicu pihak berwenang untuk merancang ulang kebijakan keamanan digital." },
 ];
 
 const GALLERY_IMAGES = [
-  "/chaewon.jpg", "/chaewon.jpg", "/chaewon.jpg", "/chaewon.jpg",
-  "/chaewon.jpg", "/chaewon.jpg", "/chaewon.jpg", "/chaewon.jpg",
+  { id: 1, img: "/chaewon.jpg", title: "Aksi Turun Jalan", desc: "Dokumentasi saat mahasiswa menyuarakan pendapatnya di ruang publik sebagai bentuk kebebasan berekspresi secara langsung di lapangan." },
+  { id: 2, img: "/chaewon.jpg", title: "Diskusi Terbuka", desc: "Sesi diskusi antar elemen mahasiswa membahas regulasi dan batasan UU ITE di era digital, mencari solusi antara kebebasan dan etika." },
+  { id: 3, img: "/chaewon.jpg", title: "Audiensi Kampus", desc: "Pertemuan dengan pihak terkait untuk memastikan perlindungan kebebasan berpendapat di lingkungan institusi pendidikan." },
+  { id: 4, img: "/chaewon.jpg", title: "Kampanye Digital", desc: "Penyebaran poster dan infografis edukatif di media sosial guna meningkatkan kesadaran masyarakat akan hak-hak digital mereka." },
+  { id: 5, img: "/chaewon.jpg", title: "Mimbar Bebas", desc: "Panggung orasi terbuka bagi mahasiswa dan masyarakat umum yang ingin menyampaikan aspirasinya tanpa takut akan represi." },
+  { id: 6, img: "/chaewon.jpg", title: "Konsolidasi Bersama", desc: "Rapat koordinasi gerakan kolektif untuk mengawal revisi undang-undang yang berpotensi membatasi hak asasi." },
+  { id: 7, img: "/chaewon.jpg", title: "Aksi Teatrikal", desc: "Penyampaian kritik sosial melalui seni pertunjukan yang menggambarkan realitas represi kebebasan berekspresi saat ini." },
+  { id: 8, img: "/chaewon.jpg", title: "Pojok Literasi", desc: "Membuka lapak bacaan publik yang berisikan literatur seputar hukum, hak asasi manusia, dan pilar demokrasi." },
 ];
 
 // ─── EASING ──────────────────────────────────────────────────────────────────
 const EXPO = [0.16, 1, 0.3, 1];
 const SMOOTH = [0.25, 0.46, 0.45, 0.94];
 
-// ─── MARQUEE ─────────────────────────────────────────────────────────────────
+// ─── NOISE TEXTURE SVG DATA URI ───────────────────────────────────────────────
+const NOISE_BG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`;
+
+// ─── OPTIMASI 1: PURE CSS MARQUEE ────────────────────────────────────────────
 function MarqueeRow({ items }: { items: string[] }) {
   const doubled = [...items, ...items, ...items, ...items, ...items];
   return (
-    <div className="overflow-hidden py-5 border-y" style={{ borderColor: "rgba(192,57,43,0.25)" }}>
-      <motion.div
-        className="inline-flex gap-16"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
-      >
+    <div className="overflow-hidden py-5 border-y relative flex" style={{ borderColor: "rgba(192,57,43,0.25)" }}>
+      <style>{`
+        @keyframes scrollXMarquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .css-marquee-container {
+          display: inline-flex;
+          white-space: nowrap;
+          animation: scrollXMarquee 35s linear infinite;
+          will-change: transform;
+        }
+      `}</style>
+      <div className="css-marquee-container gap-16">
         {doubled.map((item, i) => (
-          <span key={i} style={{ color: "#666", fontSize: "11px", fontWeight: 600, letterSpacing: "0.22em" }} className="uppercase whitespace-nowrap">
+          <span key={i} style={{ color: "#666", fontSize: "11px", fontWeight: 600, letterSpacing: "0.22em" }} className="uppercase">
             <span style={{ color: "#c0392b", marginRight: 12 }}>◆</span>{item}
           </span>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }
 
-// ─── FADE-IN SECTION ─────────────────────────────────────────────────────────
+// ─── FADE-IN SECTION DENGAN WILL-CHANGE ──────────────────────────────────────
 function FadeUp({ children, delay = 0, className = "" }: { children: React.ReactNode, delay?: number, className?: string }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-8%" });
@@ -115,34 +132,34 @@ function FadeUp({ children, delay = 0, className = "" }: { children: React.React
       initial={{ opacity: 0, y: 48 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.9, delay, ease: EXPO }}
+      style={{ willChange: isInView ? "auto" : "opacity, transform" }}
     >
       {children}
     </motion.div>
   );
 }
 
-// ─── ANIMATED NUMBER ─────────────────────────────────────────────────────────
+// ─── OPTIMASI 2: ANIMATED STAT TANPA REACT RE-RENDER ─────────────────────────
 function AnimatedStat({ value }: { value: string }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const isPercent = value.endsWith("%");
   const numStr = value.replace(/[^0-9]/g, "");
   const num = parseInt(numStr, 10);
-  const [displayed, setDisplayed] = useState(0);
+
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => Math.round(latest));
 
   useEffect(() => {
-    if (!isInView) return;
-    const controls = animate(0, num, {
-      duration: 1.6,
-      ease: SMOOTH,
-      onUpdate: (v) => setDisplayed(Math.round(v)),
-    });
-    return () => controls.stop();
-  }, [isInView, num]);
+    if (isInView) {
+      const controls = animate(count, num, { duration: 1.6, ease: SMOOTH });
+      return controls.stop;
+    }
+  }, [isInView, num, count]);
 
   return (
     <span ref={ref}>
-      {displayed}{isPercent ? "%" : value.replace(numStr, "")}
+      <motion.span>{rounded}</motion.span>{isPercent ? "%" : value.replace(numStr, "")}
     </span>
   );
 }
@@ -154,49 +171,34 @@ function WawancaraPinnedCard({ item, i, total, scrollYProgress, setIsHovering, o
   const endSlideIn = i / totalIntervals;
   const endScaleOut = (i + 1) / totalIntervals;
 
-  const y = useTransform(
-    scrollYProgress,
-    i === 0 ? [0, 1] : [startSlideIn, endSlideIn],
-    i === 0 ? ["0%", "0%"] : ["100%", "0%"]
-  );
-
-  const scale = useTransform(
-    scrollYProgress,
-    i === total - 1 ? [0, 1] : [endSlideIn, endScaleOut],
-    i === total - 1 ? [1, 1] : [1, 0.94]
-  );
-
-  const overlayOpacity = useTransform(
-    scrollYProgress,
-    i === total - 1 ? [0, 1] : [endSlideIn, endScaleOut],
-    i === total - 1 ? [0, 0] : [0, 0.6]
-  );
+  const y = useTransform(scrollYProgress, i === 0 ? [0, 1] : [startSlideIn, endSlideIn], i === 0 ? ["0%", "0%"] : ["100%", "0%"]);
+  const scale = useTransform(scrollYProgress, i === total - 1 ? [0, 1] : [endSlideIn, endScaleOut], i === total - 1 ? [1, 1] : [1, 0.94]);
+  const overlayOpacity = useTransform(scrollYProgress, i === total - 1 ? [0, 1] : [endSlideIn, endScaleOut], i === total - 1 ? [0, 0] : [0, 0.6]);
 
   return (
     <motion.div
       className="absolute left-0 right-0 rounded-t-[36px] p-8 md:p-14 flex flex-col justify-start overflow-hidden group"
       style={{
-        top: `${i * 40}px`, // Gap 40px antar tumpukan
-        bottom: "-20px", // Full sampai bawah layar (dikurangi border radius kalau ada, atau dilebihkan sedikit untuk menutupi layar)
+        top: `${i * 40}px`,
+        bottom: "-20px",
         zIndex: i + 1,
-        background: "#0a0a0a", // Hitam pekat sesuai permintaan
+        background: "#0a0a0a",
         border: `1px solid rgba(255,255,255,0.05)`,
         borderTop: `1px solid rgba(255,255,255,0.15)`,
         boxShadow: "0 -20px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1)",
         y,
         scale,
-        transformOrigin: "top center"
+        transformOrigin: "top center",
+        willChange: "transform"
       }}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
+      onClick={() => openPopup({ title: item.narsum, subtitle: item.role, content: item.fullContent, img: item.img }, item.color)}
     >
-      {/* Dimming overlay saat kartu tertumpuk */}
       <motion.div
         className="absolute inset-0 bg-black pointer-events-none"
         style={{ opacity: overlayOpacity, zIndex: 10, borderRadius: "36px" }}
       />
-
-      {/* Progress Line */}
       <motion.div
         initial={{ scaleX: 0 }}
         whileInView={{ scaleX: 1 }}
@@ -204,19 +206,13 @@ function WawancaraPinnedCard({ item, i, total, scrollYProgress, setIsHovering, o
         transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(to right, ${item.color}, transparent)`, transformOrigin: "left", zIndex: 20 }}
       />
-
-      {/* Tab Header (Akan tetap terlihat karena gap top adalah 40px) */}
       <div className="absolute top-0 left-0 right-0 h-[40px] flex items-center px-8 md:px-14 border-b border-white/5" style={{ zIndex: 20 }}>
         <div style={{ width: 6, height: 6, borderRadius: "50%", background: item.color, marginRight: 12, boxShadow: `0 0 10px ${item.color}` }} />
         <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: "#666" }}>
           NARSUM <span style={{ color: item.color }}>{item.id}</span> / 06
         </span>
       </div>
-
-      {/* Layout Grid: Content di kiri, Avatar di kanan */}
       <div className="relative z-20 w-full mt-12 md:mt-20 flex flex-col-reverse md:flex-row items-start justify-between gap-12 md:gap-24">
-
-        {/* Teks Content */}
         <div className="flex-1 max-w-2xl">
           <h3 style={{ fontSize: "clamp(36px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.04em", color: "#fff", marginBottom: 20, lineHeight: 1 }}>
             {item.narsum}
@@ -230,7 +226,10 @@ function WawancaraPinnedCard({ item, i, total, scrollYProgress, setIsHovering, o
             {item.desc}
           </p>
           <motion.button
-            onClick={() => openPopup({ title: item.narsum, subtitle: item.role, content: item.fullContent, img: item.img }, item.color)}
+            onClick={(e) => {
+              e.stopPropagation();
+              openPopup({ title: item.narsum, subtitle: item.role, content: item.fullContent, img: item.img }, item.color);
+            }}
             whileHover={{ scale: 1.05, background: item.color === "#c0392b" ? "#e74c3c" : "#f1c40f" }}
             whileTap={{ scale: 0.95 }}
             style={{ padding: "16px 36px", background: item.color, color: item.color === "#f1c40f" ? "#0a0a0a" : "#fff", fontWeight: 700, fontSize: "14px", borderRadius: 12, border: "none", cursor: "none" }}
@@ -238,23 +237,17 @@ function WawancaraPinnedCard({ item, i, total, scrollYProgress, setIsHovering, o
             Baca Selengkapnya
           </motion.button>
         </div>
-
-        {/* Avatar Image */}
-        <div className="w-40 h-40 md:w-72 md:h-72 flex-shrink-0 rounded-[32px] overflow-hidden" style={{ border: `1px solid ${item.color}30`, background: `${item.color}05`, boxShadow: `0 20px 40px -10px ${item.color}20` }}>
+        <div className="w-40 h-40 md:w-72 md:h-72 flex-shrink-0 rounded-[32px] overflow-hidden group/img" style={{ border: `1px solid ${item.color}30`, background: `${item.color}05`, boxShadow: `0 20px 40px -10px ${item.color}20` }}>
           <img
             src={item.img}
             alt={item.narsum}
-            className="w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover:mix-blend-normal group-hover:opacity-100 transition-all duration-700 hover:scale-105"
+            className="w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover/img:mix-blend-normal group-hover/img:opacity-100 transition-all duration-700 hover:scale-105"
           />
         </div>
-
       </div>
     </motion.div>
   );
 }
-
-// ─── NOISE TEXTURE SVG DATA URI ───────────────────────────────────────────────
-const NOISE_BG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`;
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function DheroKWN() {
@@ -262,11 +255,8 @@ export default function DheroKWN() {
   const [isHovering, setIsHovering] = useState(false);
   const carouselRef = useRef(null);
 
-  // States untuk Popups & Gallery
-  const [popupData, setPopupData] = useState(null); // { title, subtitle, content, color, img }
+  const [popupData, setPopupData] = useState(null);
   const [showGallery, setShowGallery] = useState(false);
-
-  // State untuk animasi teks Hero
   const [heroTextIdx, setHeroTextIdx] = useState(0);
 
   const wawancaraContainerRef = useRef(null);
@@ -275,13 +265,11 @@ export default function DheroKWN() {
     offset: ["start start", "end end"]
   });
 
-  // Cursor
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
   const cxs = useSpring(cursorX, { damping: 28, stiffness: 420, mass: 0.4 });
   const cys = useSpring(cursorY, { damping: 28, stiffness: 420, mass: 0.4 });
 
-  // 3D Parallax Values (Desktop)
   const mouseXPct = useMotionValue(0);
   const mouseYPct = useMotionValue(0);
   const tiltX = useSpring(useTransform(mouseYPct, [-1, 1], [30, -30]), { damping: 40, stiffness: 150 });
@@ -290,7 +278,6 @@ export default function DheroKWN() {
   const moveX = useSpring(useTransform(mouseXPct, [-1, 1], ["-65%", "-35%"]), { damping: 40, stiffness: 150 });
   const moveY = useSpring(useTransform(mouseYPct, [-1, 1], ["-65%", "-35%"]), { damping: 40, stiffness: 150 });
 
-  // Lenis Smooth Scroll
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -302,28 +289,26 @@ export default function DheroKWN() {
       smoothTouch: false,
       touchMultiplier: 2,
     });
-
     function raf(time) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
-
     return () => lenis.destroy();
   }, []);
 
   useEffect(() => {
     const move = (e) => {
-      cursorX.set(e.clientX - 6);
-      cursorY.set(e.clientY - 6);
       if (window.innerWidth >= 768) {
+        cursorX.set(e.clientX - 6);
+        cursorY.set(e.clientY - 6);
         mouseXPct.set((e.clientX / window.innerWidth) * 2 - 1);
         mouseYPct.set((e.clientY / window.innerHeight) * 2 - 1);
       }
     };
-    window.addEventListener("mousemove", move);
+    window.addEventListener("mousemove", move, { passive: true });
     return () => window.removeEventListener("mousemove", move);
-  }, []);
+  }, [cursorX, cursorY, mouseXPct, mouseYPct]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -359,50 +344,28 @@ export default function DheroKWN() {
 
   return (
     <div className="min-h-screen font-sans cursor-default relative selection:bg-red-900 selection:text-white w-full" style={{ background: "#0a0a0a", color: "#f2f2f2" }}>
-      {/* Grain overlay */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-60" style={{ backgroundImage: NOISE_BG, backgroundSize: "200px 200px" }} />
 
-      {/* 3D Animated Justicia (Desktop Parallax) */}
+      {/* 3D Animated Justicia */}
       <motion.div
         className="hidden md:flex fixed top-1/2 left-1/2 w-[70vw] max-w-[900px] pointer-events-none z-0 items-center justify-center"
-        style={{
-          perspective: 1500,
-          x: moveX,
-          y: moveY,
-          rotateX: tiltX,
-          rotateY: tiltY,
-          rotateZ: tiltZ,
-          opacity: 0.15,
-          mixBlendMode: "luminosity"
-        }}
+        style={{ perspective: 1500, x: moveX, y: moveY, rotateX: tiltX, rotateY: tiltY, rotateZ: tiltZ, opacity: 0.15, mixBlendMode: "luminosity", willChange: "transform" }}
         animate={{ scale: [1, 1.03, 0.97, 1] }}
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
       >
         <img src="/justicia.png" alt="Justicia Background" className="w-full h-auto object-contain drop-shadow-[0_0_100px_rgba(192,57,43,0.6)]" />
       </motion.div>
 
-      {/* 3D Animated Justicia (Mobile Auto-float) */}
+      {/* 3D Animated Justicia (Mobile) */}
       <motion.div
         className="flex md:hidden fixed top-1/2 left-1/2 w-[140vw] max-w-[900px] opacity-[0.07] pointer-events-none z-0 mix-blend-luminosity items-center justify-center"
-        style={{ perspective: 1400, x: "-50%", y: "-50%" }}
-        animate={{
-          y: ["-50%", "-53%", "-50%"],
-          x: ["-50%", "-48%", "-50%"],
-          rotateX: [6, -6, 6],
-          rotateY: [-16, 16, -16],
-          rotateZ: [-3, 3, -3],
-          scale: [1, 1.06, 1]
-        }}
-        transition={{
-          duration: 22,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
+        style={{ perspective: 1400, x: "-50%", y: "-50%", willChange: "transform" }}
+        animate={{ y: ["-50%", "-53%", "-50%"], x: ["-50%", "-48%", "-50%"], rotateX: [6, -6, 6], rotateY: [-16, 16, -16], rotateZ: [-3, 3, -3], scale: [1, 1.06, 1] }}
+        transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       >
         <img src="/justicia.png" alt="Justicia Background" className="w-full h-auto object-contain drop-shadow-[0_0_80px_rgba(192,57,43,0.6)]" />
       </motion.div>
 
-      {/* Grid Pattern */}
       <div
         className="fixed inset-0 pointer-events-none z-0 opacity-20"
         style={{
@@ -413,178 +376,66 @@ export default function DheroKWN() {
         }}
       />
 
-      {/* Background Glows (Animated) */}
-      <motion.div
-        animate={{ scale: [1, 1.2, 1], opacity: [0.03, 0.06, 0.03] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        className="fixed top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#c0392b] blur-[120px] pointer-events-none z-0"
-      />
-      <motion.div
-        animate={{ scale: [1, 1.15, 1], opacity: [0.02, 0.05, 0.02] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="fixed bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-[#f1c40f] blur-[100px] pointer-events-none z-0"
-      />
+      <motion.div animate={{ scale: [1, 1.2, 1], opacity: [0.03, 0.06, 0.03] }} transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }} className="fixed top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#c0392b] blur-[120px] pointer-events-none z-0" style={{ willChange: "transform, opacity" }} />
+      <motion.div animate={{ scale: [1, 1.15, 1], opacity: [0.02, 0.05, 0.02] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }} className="fixed bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-[#f1c40f] blur-[100px] pointer-events-none z-0" style={{ willChange: "transform, opacity" }} />
 
       {/* ── Custom Cursor ── */}
-      <motion.div
-        className="hidden md:flex items-center justify-center fixed top-0 left-0 pointer-events-none z-[9999]"
-        style={{ x: cxs, y: cys }}
-      >
-        <motion.div
-          className="rounded-full"
-          animate={{
-            width: isHovering ? 60 : 12,
-            height: isHovering ? 60 : 12,
-            background: isHovering ? "rgba(255,255,255,0.1)" : "#c0392b",
-            border: isHovering ? "1px solid rgba(255,255,255,0.4)" : "none",
-            backdropFilter: isHovering ? "blur(4px)" : "none",
-          }}
-          transition={{ duration: 0.2, ease: SMOOTH }}
-        />
+      <motion.div className="hidden md:flex items-center justify-center fixed top-0 left-0 pointer-events-none z-[9999]" style={{ x: cxs, y: cys }}>
+        <motion.div className="rounded-full" animate={{ width: isHovering ? 60 : 12, height: isHovering ? 60 : 12, background: isHovering ? "rgba(255,255,255,0.1)" : "#c0392b", border: isHovering ? "1px solid rgba(255,255,255,0.4)" : "none", backdropFilter: isHovering ? "blur(4px)" : "none" }} transition={{ duration: 0.2, ease: SMOOTH }} />
       </motion.div>
 
       {/* ── Navbar ── */}
       <motion.header
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-16"
-        animate={{
-          paddingTop: scrolled ? "20px" : "32px",
-          paddingBottom: scrolled ? "20px" : "32px",
-          backgroundColor: scrolled ? "rgba(10,10,10,0.85)" : "rgba(10,10,10,0)",
-          backdropFilter: scrolled ? "blur(20px)" : "blur(0px)",
-          borderBottom: scrolled ? "1px solid rgba(192,57,43,0.18)" : "1px solid rgba(192,57,43,0)",
-        }}
+        animate={{ paddingTop: scrolled ? "20px" : "32px", paddingBottom: scrolled ? "20px" : "32px", backgroundColor: scrolled ? "rgba(10,10,10,0.85)" : "rgba(10,10,10,0)", backdropFilter: scrolled ? "blur(20px)" : "blur(0px)", borderBottom: scrolled ? "1px solid rgba(192,57,43,0.18)" : "1px solid rgba(192,57,43,0)" }}
         transition={{ duration: 0.5, ease: SMOOTH }}
       >
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: EXPO }}
-          style={{ fontWeight: 800, letterSpacing: "-0.04em", fontSize: "20px", color: "#f2f2f2" }}
-        >
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.2, ease: EXPO }} style={{ fontWeight: 800, letterSpacing: "-0.04em", fontSize: "20px", color: "#f2f2f2" }}>
           KWN<span style={{ color: "#c0392b" }}>.</span>02
         </motion.div>
-
-        <motion.button
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: EXPO }}
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-          style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: "#888" }}
-          className="uppercase hover:text-white transition-colors duration-300"
-        >
-          {/* Menu */}
-        </motion.button>
+        <motion.button initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8, delay: 0.3, ease: EXPO }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: "#888" }} className="uppercase hover:text-white transition-colors duration-300" />
       </motion.header>
 
-      {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── HERO ── */}
       <section className="relative min-h-screen flex flex-col justify-between pt-28 overflow-hidden">
         <div className="absolute top-[-10%] left-1/2 -translate-x-1/2 w-[700px] h-[500px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(192,57,43,0.15) 0%, transparent 65%)" }} />
-
-        <motion.div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
-          style={{ y: heroY }}
-        >
-          <span style={{ fontSize: "clamp(120px,20vw,280px)", fontWeight: 900, letterSpacing: "-0.06em", color: "rgba(255,255,255,0.025)", lineHeight: 1 }}>
-            SUARA
-          </span>
+        <motion.div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" style={{ y: heroY, willChange: "transform" }}>
+          <span style={{ fontSize: "clamp(120px,20vw,280px)", fontWeight: 900, letterSpacing: "-0.06em", color: "rgba(255,255,255,0.025)", lineHeight: 1 }}>SUARA</span>
         </motion.div>
-
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="flex-1 flex flex-col items-center justify-center px-6 md:px-16 max-w-[1100px] mx-auto w-full text-center z-10"
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.1, ease: EXPO }}
-            className="flex flex-col items-center gap-6"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.4, ease: EXPO }}
-              style={{
-                border: "1px solid rgba(192,57,43,0.4)",
-                background: "rgba(192,57,43,0.08)",
-                borderRadius: 999,
-                padding: "8px 20px",
-                fontSize: "10px",
-                fontWeight: 700,
-                letterSpacing: "0.22em",
-                color: "#c0392b",
-              }}
-              className="uppercase"
-            >
+        <motion.div style={{ y: heroY, opacity: heroOpacity, willChange: "transform, opacity" }} className="flex-1 flex flex-col items-center justify-center px-6 md:px-16 max-w-[1100px] mx-auto w-full text-center z-10">
+          <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, delay: 0.1, ease: EXPO }} className="flex flex-col items-center gap-6">
+            <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.4, ease: EXPO }} style={{ border: "1px solid rgba(192,57,43,0.4)", background: "rgba(192,57,43,0.08)", borderRadius: 999, padding: "8px 20px", fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#c0392b" }} className="uppercase">
               Tugas Kewarganegaraan — 2026
             </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.3, delay: 0.5, ease: EXPO }}
-              style={{ fontSize: "clamp(38px,6vw,84px)", fontWeight: 700, letterSpacing: "-0.04em", lineHeight: 1.1, color: "#f2f2f2", minHeight: "2.2em" }}
-            >
+            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.3, delay: 0.5, ease: EXPO }} style={{ fontSize: "clamp(38px,6vw,84px)", fontWeight: 700, letterSpacing: "-0.04em", lineHeight: 1.1, color: "#f2f2f2", minHeight: "2.2em" }}>
               Mendefinisikan esensi<br />
               <div className="relative overflow-hidden inline-block w-full h-[1.1em] mt-2">
                 <AnimatePresence mode="popLayout">
-                  <motion.span
-                    key={heroTextIdx}
-                    initial={{ y: 80, opacity: 0, rotateX: -90 }}
-                    animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                    exit={{ y: -80, opacity: 0, rotateX: 90 }}
-                    transition={{ duration: 0.8, ease: SMOOTH }}
-                    style={{ color: "#c0392b", display: "inline-block", position: "absolute", left: 0, right: 0 }}
-                  >
+                  <motion.span key={heroTextIdx} initial={{ y: 80, opacity: 0, rotateX: -90 }} animate={{ y: 0, opacity: 1, rotateX: 0 }} exit={{ y: -80, opacity: 0, rotateX: 90 }} transition={{ duration: 0.8, ease: SMOOTH }} style={{ color: "#c0392b", display: "inline-block", position: "absolute", left: 0, right: 0 }}>
                     {HERO_TEXTS[heroTextIdx]}
                   </motion.span>
                 </AnimatePresence>
               </div>
             </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.7, ease: EXPO }}
-              style={{ fontSize: "clamp(14px,1.3vw,18px)", color: "#777", maxWidth: 620, fontWeight: 300, lineHeight: 1.7 }}
-            >
+            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.7, ease: EXPO }} style={{ fontSize: "clamp(14px,1.3vw,18px)", color: "#777", maxWidth: 620, fontWeight: 300, lineHeight: 1.7 }}>
               Eksplorasi mendalam mengenai batasan, hak, dan realitas kebebasan berpendapat di era disrupsi digital yang mengubah cara kita terhubung.
             </motion.p>
           </motion.div>
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="w-full z-10"
-        >
-          <p style={{ textAlign: "center", fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: "#444", marginBottom: 16 }} className="uppercase">
-            Referensi Utama Kami
-          </p>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 0.8 }} className="w-full z-10">
+          <p style={{ textAlign: "center", fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: "#444", marginBottom: 16 }} className="uppercase">Referensi Utama Kami</p>
           <MarqueeRow items={REF_SITES} />
         </motion.div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── FOKUS MATERI ── */}
       <section className="px-6 md:px-16 py-24 md:py-48 max-w-[1600px] mx-auto" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <FadeUp className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
-          <h2 style={{ fontSize: "clamp(40px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: "#f2f2f2" }}>
-            Fokus<br /><span style={{ color: "#333" }}>Materi.</span>
-          </h2>
-          <p style={{ color: "#555", fontSize: "14px", maxWidth: 280, lineHeight: 1.7 }}>
-            Klik pada area materi untuk membaca pemaparan lengkap tentang kajian kebebasan berpendapat.
-          </p>
+          <h2 style={{ fontSize: "clamp(40px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: "#f2f2f2" }}>Fokus<br /><span style={{ color: "#333" }}>Materi.</span></h2>
+          <p style={{ color: "#555", fontSize: "14px", maxWidth: 280, lineHeight: 1.7 }}>Klik pada area materi untuk membaca pemaparan lengkap tentang kajian kebebasan berpendapat.</p>
         </FadeUp>
-
         <div className="relative w-full">
-          <div
-            ref={carouselRef}
-            className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6"
-            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-          >
+          <div ref={carouselRef} className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-6" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
             {MATERI_CARDS.map((card, idx) => (
               <motion.div
                 key={card.id}
@@ -600,199 +451,95 @@ export default function DheroKWN() {
                 style={{ minWidth: "100%", background: "rgba(255, 255, 255, 0.03)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.08)" }}
               >
                 <div className="w-full md:w-[58%] rounded-[20px] relative overflow-hidden" style={{ background: "#1a1a1a", aspectRatio: "16/10" }}>
-                  <motion.img
-                    src={card.img}
-                    alt={card.title}
-                    className="absolute inset-0 object-cover w-full h-full"
-                    style={{ opacity: 0.3, mixBlendMode: "luminosity" }}
-                    whileHover={{ scale: 1.05, opacity: 0.5 }}
-                    transition={{ duration: 0.8 }}
-                  />
+                  <img src={card.img} alt={card.title} className="absolute inset-0 object-cover w-full h-full transition-all duration-700 ease-out opacity-30 grayscale group-hover:opacity-80 group-hover:grayscale-0 group-hover:scale-105" />
                   <div className="absolute top-6 right-6 w-3 h-3 rounded-full" style={{ background: "#c0392b" }} />
                   <div className="absolute inset-x-0 bottom-0 p-8 md:p-12 flex flex-col justify-end" style={{ background: "linear-gradient(to top, #111 0%, rgba(17,17,17,0.7) 60%, transparent 100%)" }}>
-                    <motion.h3
-                      initial={{ opacity: 0, y: 16 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.7, ease: EXPO }}
-                      style={{ fontSize: "clamp(40px,6vw,80px)", fontWeight: 800, letterSpacing: "-0.04em", color: "#f2f2f2", lineHeight: 1 }}
-                    >
-                      {card.stat}
-                    </motion.h3>
+                    <motion.h3 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7, ease: EXPO }} style={{ fontSize: "clamp(40px,6vw,80px)", fontWeight: 800, letterSpacing: "-0.04em", color: "#f2f2f2", lineHeight: 1 }}>{card.stat}</motion.h3>
                     <p style={{ fontSize: "18px", color: "#888", fontWeight: 400, marginTop: 8 }}>{card.statLabel}</p>
                   </div>
                 </div>
-
                 <div className="w-full md:w-[42%] p-6 md:p-12 flex flex-col justify-center relative">
-                  <div className="absolute top-8 right-8 w-10 h-10 rounded-full border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-0 -translate-x-4">
-                    ↗
-                  </div>
-                  <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: "#c0392b", background: "rgba(192,57,43,0.08)", border: "1px solid rgba(192,57,43,0.2)", borderRadius: 999, padding: "6px 16px", width: "fit-content", marginBottom: 24, display: "block" }}>
-                    {card.category}
-                  </span>
-                  <h3 style={{ fontSize: "clamp(32px,4vw,56px)", fontWeight: 700, letterSpacing: "-0.04em", color: "#f2f2f2", marginBottom: 24, lineHeight: 1.1 }}>
-                    {card.title}
-                  </h3>
+                  <div className="absolute top-8 right-8 w-10 h-10 rounded-full border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-0 -translate-x-4">↗</div>
+                  <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: "#c0392b", background: "rgba(192,57,43,0.08)", border: "1px solid rgba(192,57,43,0.2)", borderRadius: 999, padding: "6px 16px", width: "fit-content", marginBottom: 24, display: "block" }}>{card.category}</span>
+                  <h3 style={{ fontSize: "clamp(32px,4vw,56px)", fontWeight: 700, letterSpacing: "-0.04em", color: "#f2f2f2", marginBottom: 24, lineHeight: 1.1 }}>{card.title}</h3>
                   <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.18em", color: "#444", marginBottom: 12 }}>{card.tags}</p>
                   <p style={{ fontSize: "clamp(15px,1.2vw,18px)", color: "#666", fontWeight: 300, lineHeight: 1.7, maxWidth: 340 }}>{card.desc}</p>
                 </div>
               </motion.div>
             ))}
           </div>
-
           <div className="flex justify-end gap-3 mt-6">
             {[{ fn: scrollLeft, icon: "←" }, { fn: scrollRight, icon: "→" }].map(({ fn, icon }, i) => (
-              <motion.button
-                key={i}
-                whileHover={{ scale: 1.08, background: "#c0392b", color: "#fff" }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.2 }}
-                onClick={fn}
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-                style={{ width: 52, height: 52, borderRadius: "50%", background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.08)", color: "#888", fontSize: "18px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "none" }}
-              >
-                {icon}
-              </motion.button>
+              <motion.button key={i} whileHover={{ scale: 1.08, background: "#c0392b", color: "#fff" }} whileTap={{ scale: 0.95 }} transition={{ duration: 0.2 }} onClick={fn} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} style={{ width: 52, height: 52, borderRadius: "50%", background: "#1a1a1a", border: "1px solid rgba(255,255,255,0.08)", color: "#888", fontSize: "18px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "none" }}>{icon}</motion.button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── STATEMENT ── */}
       <section className="px-6 md:px-16 min-h-[80vh] flex items-center justify-center relative overflow-hidden py-24" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(192,57,43,0.05),transparent_70%)]" />
-
         <div className="max-w-[1100px] w-full z-10 text-center" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
-          <FadeUp>
-            <div style={{ fontSize: "80px", fontWeight: 900, color: "#c0392b", lineHeight: 1, marginBottom: 24, opacity: 0.7 }}>"</div>
-          </FadeUp>
-
+          <FadeUp><div style={{ fontSize: "80px", fontWeight: 900, color: "#c0392b", lineHeight: 1, marginBottom: 24, opacity: 0.7 }}>"</div></FadeUp>
           <FadeUp delay={0.1}>
             <h2 style={{ fontSize: "clamp(32px,5vw,64px)", fontWeight: 400, letterSpacing: "-0.03em", lineHeight: 1.2, color: "#555" }}>
-              Kami adalah{" "}
-              <motion.span
-                className="font-bold text-[#f2f2f2] relative inline-block"
-                whileHover={{ scale: 1.05, color: "#c0392b" }}
-              >
-                kelompok mahasiswa
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  transition={{ duration: 1, delay: 0.5 }}
-                  className="absolute -bottom-2 left-0 w-full h-[2px] bg-[#c0392b] origin-left"
-                />
-              </motion.span>{" "}
-              yang mengeksplorasi batas kebebasan berekspresi.
+              Kami adalah <motion.span className="font-bold text-[#f2f2f2] relative inline-block" whileHover={{ scale: 1.05, color: "#c0392b" }}>kelompok mahasiswa<motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} transition={{ duration: 1, delay: 0.5 }} className="absolute -bottom-2 left-0 w-full h-[2px] bg-[#c0392b] origin-left" /></motion.span> yang mengeksplorasi batas kebebasan berekspresi.
             </h2>
           </FadeUp>
-
           <FadeUp delay={0.2}>
-            <h2 style={{ fontSize: "clamp(32px,5vw,64px)", fontWeight: 400, letterSpacing: "-0.03em", lineHeight: 1.2, color: "#555", marginTop: "clamp(24px,3vw,40px)" }}>
-              Haruskah kita <span className="font-bold text-white italic">speak up</span> atau sekadar follow the rules? Inilah analisis kami tentang etika <span className="font-bold text-[#f2f2f2]">beropini di ruang digital.</span>
-            </h2>
+            <h2 style={{ fontSize: "clamp(32px,5vw,64px)", fontWeight: 400, letterSpacing: "-0.03em", lineHeight: 1.2, color: "#555", marginTop: "clamp(24px,3vw,40px)" }}>Haruskah kita <span className="font-bold text-white italic">speak up</span> atau sekadar follow the rules? Inilah analisis kami tentang etika <span className="font-bold text-[#f2f2f2]">beropini di ruang digital.</span></h2>
           </FadeUp>
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── WAWANCARA (PINNED STACK) ── */}
-      <section
-        ref={wawancaraContainerRef}
-        style={{ height: `${WAWANCARA.length * 100}vh`, background: "#0a0a0a", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
-        className="w-full relative"
-      >
+      <section ref={wawancaraContainerRef} style={{ height: `${WAWANCARA.length * 100}vh`, background: "#0a0a0a", borderBottom: "1px solid rgba(255,255,255,0.06)" }} className="w-full relative">
         <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden px-8 md:px-16">
           <div className="max-w-[1200px] w-full mx-auto relative h-full flex flex-col justify-center pt-24 pb-12">
-
             <FadeUp className="mb-8 flex-shrink-0 z-0 relative">
-              <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#c0392b", border: "1px solid rgba(192,57,43,0.3)", background: "rgba(192,57,43,0.06)", borderRadius: 999, padding: "6px 16px", display: "inline-block", marginBottom: 16 }}>
-                DATA WAWANCARA
-              </span>
-              <h2 style={{ fontSize: "clamp(40px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: "#333" }}>
-                Insight &<br /><span style={{ color: "#f2f2f2" }}>Perspektif.</span>
-              </h2>
+              <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#c0392b", border: "1px solid rgba(192,57,43,0.3)", background: "rgba(192,57,43,0.06)", borderRadius: 999, padding: "6px 16px", display: "inline-block", marginBottom: 16 }}>DATA WAWANCARA</span>
+              <h2 style={{ fontSize: "clamp(40px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: "#333" }}>Insight &<br /><span style={{ color: "#f2f2f2" }}>Perspektif.</span></h2>
             </FadeUp>
-
             <div className="relative w-full flex-grow mt-4">
               {WAWANCARA.map((item, i) => (
-                <WawancaraPinnedCard
-                  key={item.id}
-                  item={item}
-                  i={i}
-                  total={WAWANCARA.length}
-                  scrollYProgress={wawancaraScroll.scrollYProgress}
-                  setIsHovering={setIsHovering}
-                  openPopup={openPopup}
-                />
+                <WawancaraPinnedCard key={item.id} item={item} i={i} total={WAWANCARA.length} scrollYProgress={wawancaraScroll.scrollYProgress} setIsHovering={setIsHovering} openPopup={openPopup} />
               ))}
             </div>
-
           </div>
         </div>
       </section>
 
-
-
-      {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── KUISIONER ── */}
       <section className="px-6 md:px-16 py-24 md:py-48 max-w-[1200px] mx-auto">
         <FadeUp className="flex flex-col md:flex-row justify-between items-start md:items-center mb-20 gap-8">
           <div>
-            <span style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#888", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", borderRadius: 999, padding: "6px 16px", marginBottom: 16 }}>
-              HIGHLIGHTS
-            </span>
-            <h2 style={{ fontSize: "clamp(32px,4vw,56px)", fontWeight: 700, letterSpacing: "-0.04em", lineHeight: 1.1, color: "#444" }}>
-              Angka yang<br /><span style={{ color: "#f2f2f2", fontWeight: 800 }}>mewakili realitas</span>
-            </h2>
+            <span style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#888", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", borderRadius: 999, padding: "6px 16px", marginBottom: 16 }}>HIGHLIGHTS</span>
+            <h2 style={{ fontSize: "clamp(32px,4vw,56px)", fontWeight: 700, letterSpacing: "-0.04em", lineHeight: 1.1, color: "#444" }}>Angka yang<br /><span style={{ color: "#f2f2f2", fontWeight: 800 }}>mewakili realitas</span></h2>
           </div>
         </FadeUp>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-16 gap-x-12 lg:gap-x-24">
           {KUISIONER.map((stat, i) => (
             <FadeUp key={i} delay={i * 0.1}>
               <div className="flex flex-col">
                 <div className="flex items-baseline gap-3 mb-2">
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.1, ease: [0.34, 1.56, 0.64, 1] }}
-                    style={{ width: 10, height: 10, borderRadius: "50%", background: stat.color, flexShrink: 0, marginBottom: 6 }}
-                  />
-                  <h3 style={{ fontSize: "clamp(56px,8vw,96px)", fontWeight: 900, letterSpacing: "-0.05em", color: "#f2f2f2", lineHeight: 1 }}>
-                    <AnimatedStat value={stat.value} />
-                  </h3>
+                  <motion.div initial={{ scale: 0 }} whileInView={{ scale: 1 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: i * 0.1, ease: [0.34, 1.56, 0.64, 1] }} style={{ width: 10, height: 10, borderRadius: "50%", background: stat.color, flexShrink: 0, marginBottom: 6 }} />
+                  <h3 style={{ fontSize: "clamp(56px,8vw,96px)", fontWeight: 900, letterSpacing: "-0.05em", color: "#f2f2f2", lineHeight: 1 }}><AnimatedStat value={stat.value} /></h3>
                 </div>
-                <p style={{ fontSize: "clamp(15px,1.2vw,20px)", color: "#555", fontWeight: 300, marginBottom: 20 }}>
-                  {stat.label}
-                </p>
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1.2, delay: i * 0.05, ease: EXPO }}
-                  style={{ height: 1, background: "rgba(255,255,255,0.06)", transformOrigin: "left" }}
-                />
+                <p style={{ fontSize: "clamp(15px,1.2vw,20px)", color: "#555", fontWeight: 300, marginBottom: 20 }}>{stat.label}</p>
+                <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }} transition={{ duration: 1.2, delay: i * 0.05, ease: EXPO }} style={{ height: 1, background: "rgba(255,255,255,0.06)", transformOrigin: "left" }} />
               </div>
             </FadeUp>
           ))}
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── PASAL ── */}
       <section className="px-8 md:px-16 py-32 md:py-48 max-w-[1600px] mx-auto" style={{ borderTop: "1px solid rgba(255,255,255,0.06)", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="flex flex-col lg:flex-row gap-20">
           <FadeUp className="lg:w-1/3">
-            <h2 style={{ fontSize: "clamp(40px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: "#f2f2f2", marginBottom: 20 }}>
-              Landasan<br /><span style={{ color: "#333" }}>Hukum.</span>
-            </h2>
+            <h2 style={{ fontSize: "clamp(40px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: "#f2f2f2", marginBottom: 20 }}>Landasan<br /><span style={{ color: "#333" }}>Hukum.</span></h2>
             <div style={{ fontSize: "64px", color: "#c0392b", opacity: 0.5, lineHeight: 1 }}>⚖</div>
-            <p style={{ color: "#555", fontSize: "16px", fontWeight: 300, maxWidth: 300, lineHeight: 1.7, marginTop: 16 }}>
-              Regulasi yang menjamin sekaligus membatasi kebebasan berpendapat di Indonesia. Klik untuk melihat detail.
-            </p>
+            <p style={{ color: "#555", fontSize: "16px", fontWeight: 300, maxWidth: 300, lineHeight: 1.7, marginTop: 16 }}>Regulasi yang menjamin sekaligus membatasi kebebasan berpendapat di Indonesia. Klik untuk melihat detail.</p>
           </FadeUp>
 
           <div className="lg:w-2/3">
@@ -810,34 +557,14 @@ export default function DheroKWN() {
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
               >
-                <div className="absolute right-8 top-1/2 -translate-y-1/2 text-[#c0392b] text-2xl opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300">
-                  →
-                </div>
-
+                <div className="absolute right-8 top-1/2 -translate-y-1/2 text-[#c0392b] text-2xl opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300">→</div>
                 <div className="flex items-start gap-4 md:gap-8">
-                  <motion.span
-                    style={{ fontSize: "11px", fontWeight: 700, color: "#c0392b", letterSpacing: "0.1em", paddingTop: 8, minWidth: 24 }}
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 + 0.3 }}
-                  >
-                    0{i + 1}
-                  </motion.span>
-
-                  {/* Thumbnail Pasal */}
+                  <motion.span style={{ fontSize: "11px", fontWeight: 700, color: "#c0392b", letterSpacing: "0.1em", paddingTop: 8, minWidth: 24 }} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 + 0.3 }}>0{i + 1}</motion.span>
                   <div className="w-16 h-16 md:w-24 md:h-24 flex-shrink-0 rounded-xl overflow-hidden bg-[#111] border border-white/10 hidden sm:block">
-                    <img
-                      src={p.img}
-                      alt={p.title}
-                      className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-300 mix-blend-luminosity group-hover:mix-blend-normal"
-                    />
+                    <img src={p.img} alt={p.title} className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-300 mix-blend-luminosity group-hover:mix-blend-normal" />
                   </div>
-
                   <div className="pr-12">
-                    <h3 style={{ fontSize: "clamp(20px,2.5vw,32px)", fontWeight: 700, letterSpacing: "-0.03em", color: "#f2f2f2", marginBottom: 12, transition: "color 0.3s" }}>
-                      {p.title}
-                    </h3>
+                    <h3 style={{ fontSize: "clamp(20px,2.5vw,32px)", fontWeight: 700, letterSpacing: "-0.03em", color: "#f2f2f2", marginBottom: 12, transition: "color 0.3s" }}>{p.title}</h3>
                     <p style={{ color: "#555", fontSize: "clamp(14px,1.1vw,18px)", fontWeight: 300, lineHeight: 1.7, maxWidth: 560 }}>{p.desc}</p>
                   </div>
                 </div>
@@ -847,13 +574,10 @@ export default function DheroKWN() {
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── TEAM ── */}
       <section className="px-8 md:px-16 py-32 md:py-48 max-w-[1200px] mx-auto" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <FadeUp className="mb-20 text-center">
-          <h2 style={{ fontSize: "clamp(48px,6vw,96px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1 }}>
-            The <span style={{ color: "#c0392b" }}>Team.</span>
-          </h2>
+          <h2 style={{ fontSize: "clamp(48px,6vw,96px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1 }}>The <span style={{ color: "#c0392b" }}>Team.</span></h2>
           <p className="mt-4 text-[#666] max-w-md mx-auto">Penggagas, peneliti, dan pengembang di balik proyek dokumentasi kebebasan berpendapat ini.</p>
         </FadeUp>
 
@@ -868,7 +592,8 @@ export default function DheroKWN() {
               className="group w-[45%] md:w-[28%] flex flex-col items-center text-center"
               onMouseEnter={() => setIsHovering(true)}
               onMouseLeave={() => setIsHovering(false)}
-              style={{ cursor: "none" }}
+              onClick={() => openPopup({ title: member.name, subtitle: member.role, content: member.fullContent, img: member.img }, "#c0392b")}
+              style={{ cursor: "pointer" }}
             >
               <motion.div
                 whileHover={{ scale: 1.05, y: -10 }}
@@ -876,86 +601,50 @@ export default function DheroKWN() {
                 className="relative overflow-hidden rounded-full mb-6 w-40 h-40 md:w-56 md:h-56"
                 style={{ background: "#111", border: "1px solid rgba(255,255,255,0.1)" }}
               >
-                <img
-                  src={member.img}
-                  alt={member.name}
-                  className="object-cover w-full h-full"
-                  style={{ opacity: 0.4, filter: "grayscale(100%)", transition: "opacity 0.8s ease, filter 0.8s ease" }}
-                  onMouseEnter={(e) => { e.target.style.opacity = 1; e.target.style.filter = "grayscale(0%)"; }}
-                  onMouseLeave={(e) => { e.target.style.opacity = 0.4; e.target.style.filter = "grayscale(100%)"; }}
-                />
+                <img src={member.img} alt={member.name} className="object-cover w-full h-full transition-all duration-700 ease-out opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0" />
               </motion.div>
-              <h4 style={{ fontSize: "clamp(18px,1.6vw,24px)", fontWeight: 600, letterSpacing: "-0.02em", marginBottom: 6, color: "#f2f2f2" }}>{member.name}</h4>
+              <h4 style={{ fontSize: "clamp(18px,1.6vw,24px)", fontWeight: 600, letterSpacing: "-0.02em", marginBottom: 6, color: "#f2f2f2", transition: "color 0.3s" }} className="group-hover:text-[#c0392b]">{member.name}</h4>
               <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: "#c0392b", textTransform: "uppercase" }}>{member.role}</p>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── DOKUMENTASI ── */}
-      <section
-        className="px-6 md:px-16 w-full flex items-center justify-center relative overflow-hidden"
-        style={{ minHeight: "100vh", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingTop: 96, paddingBottom: 48 }}
-      >
+      <section className="px-6 md:px-16 w-full flex items-center justify-center relative overflow-hidden" style={{ minHeight: "100vh", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingTop: 96, paddingBottom: 48 }}>
         <div className="max-w-[1600px] w-full h-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
           <FadeUp className="flex flex-col gap-5">
-            <span style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#888", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", borderRadius: 999, padding: "6px 16px", width: "fit-content" }}>
-              HIGHLIGHTS
-            </span>
-            <h2 style={{ fontSize: "clamp(40px,6vw,80px)", fontWeight: 700, letterSpacing: "-0.04em", lineHeight: 1.05 }}>
-              <span style={{ color: "#444", fontWeight: 400 }}>Dokumentasi</span><br />Bukti Digital.
-            </h2>
-            <motion.button
-              onClick={() => setShowGallery(true)}
-              whileHover={{ scale: 1.04, background: "#c0392b", borderColor: "#c0392b" }}
-              whileTap={{ scale: 0.97 }}
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-              style={{ marginTop: 16, padding: "16px 36px", background: "rgba(255,255,255,0.02)", color: "#f2f2f2", fontWeight: 700, fontSize: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", cursor: "none", width: "fit-content", transition: "all 0.3s" }}
-            >
+            <span style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#888", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", borderRadius: 999, padding: "6px 16px", width: "fit-content" }}>HIGHLIGHTS</span>
+            <h2 style={{ fontSize: "clamp(40px,6vw,80px)", fontWeight: 700, letterSpacing: "-0.04em", lineHeight: 1.05 }}><span style={{ color: "#444", fontWeight: 400 }}>Dokumentasi</span><br />Bukti Digital.</h2>
+            <motion.button onClick={() => setShowGallery(true)} whileHover={{ scale: 1.04, background: "#c0392b", borderColor: "#c0392b" }} whileTap={{ scale: 0.97 }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)} style={{ marginTop: 16, padding: "16px 36px", background: "rgba(255,255,255,0.02)", color: "#f2f2f2", fontWeight: 700, fontSize: "14px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", cursor: "none", width: "fit-content", transition: "all 0.3s" }}>
               Lihat Semua Dokumentasi
             </motion.button>
           </FadeUp>
 
-          <div
-            className="relative overflow-hidden"
-            style={{
-              height: "85vh",
-              maxHeight: "85vh",
-              maskImage: "linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)",
-              WebkitMaskImage: "linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)",
-            }}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-          >
-            <style>{`
-              .marquee-vertical {
-                animation: scrollVertical 25s linear infinite;
-              }
-              .marquee-vertical:hover {
-                animation-play-state: paused;
-              }
-              @keyframes scrollVertical {
-                from { transform: translateY(0); }
-                to { transform: translateY(-50%); }
-              }
-            `}</style>
+          <div className="relative overflow-hidden" style={{ height: "85vh", maxHeight: "85vh", maskImage: "linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, transparent, black 12%, black 88%, transparent)" }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
+            <style>{`.marquee-vertical { animation: scrollVertical 25s linear infinite; will-change: transform; } .marquee-vertical:hover { animation-play-state: paused; } @keyframes scrollVertical { from { transform: translateY(0); } to { transform: translateY(-50%); } }`}</style>
             <div className="flex flex-col gap-6 py-6 marquee-vertical">
               {[...SCREENSHOTS, ...SCREENSHOTS, ...SCREENSHOTS, ...SCREENSHOTS].map((ss, idx) => (
                 <motion.div
                   key={`${ss.id}-${idx}`}
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.4, ease: SMOOTH }}
-                  className="group flex-shrink-0 rounded-[24px] p-3"
-                  style={{ background: "#111", border: "1px solid rgba(255,255,255,0.05)", cursor: "none" }}
+                  className="group flex-shrink-0 rounded-[24px] p-3 cursor-pointer"
+                  style={{ background: "#111", border: "1px solid rgba(255,255,255,0.05)" }}
+                  onClick={() => openPopup({ title: `Bukti Digital 0${ss.id}`, subtitle: ss.label, content: ss.desc, img: ss.img }, "#f1c40f")}
                 >
                   <div className="relative overflow-hidden rounded-[18px]" style={{ aspectRatio: "16/9", background: "#1a1a1a" }}>
-                    <img src="/chaewon.jpg" alt="" className="object-cover w-full h-full" style={{ opacity: 0.3, transition: "opacity 0.8s ease" }} />
-                    <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(10,10,10,0.3)" }}>
-                      <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.25em", color: "#555", background: "#111", padding: "6px 16px", borderRadius: 999, border: "1px solid rgba(255,255,255,0.06)" }}>
-                        SS 0{ss.id}
+                    <img src={ss.img || "/chaewon.jpg"} alt="" className="object-cover w-full h-full transition-all duration-[800ms] ease-out opacity-30 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105" />
+
+                    {/* Glassmorphism Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/20 pointer-events-none">
+                      <span className="text-white text-xs tracking-[0.2em] font-bold border border-white/20 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
+                        LIHAT DETAIL
                       </span>
+                    </div>
+
+                    <div className="absolute top-4 left-4 flex items-center justify-center pointer-events-none group-hover:opacity-0 transition-opacity duration-300">
+                      <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.25em", color: "#555", background: "rgba(17,17,17,0.8)", backdropFilter: "blur(8px)", padding: "6px 16px", borderRadius: 999, border: "1px solid rgba(255,255,255,0.06)" }}>SS 0{ss.id}</span>
                     </div>
                   </div>
                   <div style={{ marginTop: 16, marginBottom: 4, display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0 8px" }}>
@@ -969,51 +658,21 @@ export default function DheroKWN() {
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── FOOTER ── */}
       <footer className="relative overflow-hidden pt-24 md:pt-32 pb-10 px-6 md:px-8" style={{ background: "rgba(5, 5, 5, 0.2)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)" }}>
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#c0392b]/30 to-transparent" />
         <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-20 relative z-10">
           <div>
             <span className="text-[#c0392b] text-xs font-bold tracking-[0.3em] mb-4 block uppercase">Reach Out</span>
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: EXPO }}
-              style={{ fontSize: "clamp(64px,10vw,160px)", fontWeight: 900, letterSpacing: "-0.05em", lineHeight: 0.9, color: "#1a1a1a", marginBottom: 32, cursor: "none", transition: "color 0.4s" }}
-              whileHover={{ color: "#f2f2f2" }}
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-            >
-              Let's<br />Talk.
-            </motion.h2>
-            <a
-              href="mailto:kwnkelompok2@upnvjt.edu"
-              className="text-xl md:text-3xl font-light text-[#888] hover:text-[#c0392b] transition-colors duration-300 relative inline-block group pb-2"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-            >
+            <motion.h2 initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 1, ease: EXPO }} style={{ fontSize: "clamp(64px,10vw,160px)", fontWeight: 900, letterSpacing: "-0.05em", lineHeight: 0.9, color: "#1a1a1a", marginBottom: 32, cursor: "none", transition: "color 0.4s" }} whileHover={{ color: "#f2f2f2" }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>Let's<br />Talk.</motion.h2>
+            <a href="mailto:kwnkelompok2@upnvjt.edu" className="text-xl md:text-3xl font-light text-[#888] hover:text-[#c0392b] transition-colors duration-300 relative inline-block group pb-2" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
               kwnkelompok2@upnvjt.edu
               <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#c0392b] transition-all duration-300 group-hover:w-full" />
             </a>
           </div>
-
           <div className="text-left md:text-right">
             {["Universitas Pembangunan Nasional 'Veteran' Jawa Timur", "Fakultas Ilmu Komputer", "Program Studi Informatika"].map((line, i) => (
-              <motion.p
-                key={i}
-                initial={{ opacity: 0, x: 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: EXPO }}
-                style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: "#444", textTransform: "uppercase", marginBottom: 12, cursor: "none" }}
-                whileHover={{ color: "#f2f2f2", x: -5 }}
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-              >
-                {line}
-              </motion.p>
+              <motion.p key={i} initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1, ease: EXPO }} style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: "#444", textTransform: "uppercase", marginBottom: 12, cursor: "none" }} whileHover={{ color: "#f2f2f2", x: -5 }} onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>{line}</motion.p>
             ))}
             <div className="w-full h-[1px] bg-white/5 my-8" />
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -1022,43 +681,20 @@ export default function DheroKWN() {
                   <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c, opacity: 0.8 }} />
                 ))}
               </div>
-              <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", color: "#555", textTransform: "uppercase" }}>
-                © 2026. All Rights Reserved.
-              </p>
+              <p style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.15em", color: "#555", textTransform: "uppercase" }}>© 2026. All Rights Reserved.</p>
             </div>
           </div>
         </div>
       </footer>
 
-      {/* ════════════════════════════════════════════════════════════════ */}
-      {/* ── MODALS / POPUPS ── */}
-
+      {/* ── MODALS / POPUPS (Utama) ── */}
       <AnimatePresence>
         {popupData && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-[999] flex items-center justify-center p-4 md:p-12 bg-black/80 backdrop-blur-md"
-            onClick={() => setPopupData(null)}
-          >
-            <motion.div
-              initial={{ y: 50, scale: 0.95 }}
-              animate={{ y: 0, scale: 1 }}
-              exit={{ y: 30, scale: 0.95, opacity: 0 }}
-              transition={{ duration: 0.5, ease: EXPO }}
-              className="bg-[rgba(10,10,10,0.85)] backdrop-blur-3xl border border-white/10 rounded-[32px] p-6 md:p-14 max-w-4xl w-[95%] md:w-full max-h-[85vh] overflow-y-auto relative shadow-[0_0_80px_rgba(0,0,0,0.8)]"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                onClick={() => setPopupData(null)}
-                className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/20 text-white transition-colors z-20 backdrop-blur-md"
-              >
-                ✕
-              </button>
+          // Z-INDEX DINAIPKAN MENJADI 1100 AGAR SELALU DI ATAS GALLERY
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} className="fixed inset-0 z-[1100] flex items-center justify-center p-4 md:p-12 bg-black/80 backdrop-blur-md" onClick={() => setPopupData(null)}>
+            <motion.div initial={{ y: 50, scale: 0.95 }} animate={{ y: 0, scale: 1 }} exit={{ y: 30, scale: 0.95, opacity: 0 }} transition={{ duration: 0.5, ease: EXPO }} className="bg-[rgba(10,10,10,0.85)] backdrop-blur-3xl border border-white/10 rounded-[32px] p-6 md:p-14 max-w-4xl w-[95%] md:w-full max-h-[85vh] overflow-y-auto relative shadow-[0_0_80px_rgba(0,0,0,0.8)]" onClick={(e) => e.stopPropagation()} data-lenis-prevent="true">
+              <button onClick={() => setPopupData(null)} className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/20 text-white transition-colors z-20 backdrop-blur-md">✕</button>
 
-              {/* Tampilan Gambar di dalam Popup (Banner Area) */}
               {popupData.img && (
                 <div className="w-full h-[200px] md:h-[320px] mb-8 rounded-3xl overflow-hidden relative border border-white/5 shadow-inner">
                   <img src={popupData.img} alt={popupData.title} className="w-full h-full object-cover" />
@@ -1067,15 +703,9 @@ export default function DheroKWN() {
               )}
 
               <div className="relative z-10 -mt-16 md:-mt-24 pt-4">
-                <span style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.2em", color: popupData.themeColor || "#c0392b", background: `${popupData.themeColor || "#c0392b"}20`, border: `1px solid ${popupData.themeColor || "#c0392b"}40`, borderRadius: 999, padding: "8px 20px", width: "fit-content", marginBottom: 24, display: "block" }}>
-                  {popupData.subtitle}
-                </span>
-                <h2 style={{ fontSize: "clamp(36px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.04em", color: "#fdfdfd", marginBottom: 32, lineHeight: 1.05 }}>
-                  {popupData.title}
-                </h2>
-
+                <span style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.2em", color: popupData.themeColor || "#c0392b", background: `${popupData.themeColor || "#c0392b"}20`, border: `1px solid ${popupData.themeColor || "#c0392b"}40`, borderRadius: 999, padding: "8px 20px", width: "fit-content", marginBottom: 24, display: "block" }}>{popupData.subtitle}</span>
+                <h2 style={{ fontSize: "clamp(36px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.04em", color: "#fdfdfd", marginBottom: 32, lineHeight: 1.05 }}>{popupData.title}</h2>
                 <div className="w-full h-[1px] bg-gradient-to-r from-white/20 to-transparent mb-10" />
-
                 <div className="prose prose-invert prose-lg max-w-none text-[#aaa] leading-[1.8] font-light">
                   <p>{popupData.content}</p>
                 </div>
@@ -1085,45 +715,34 @@ export default function DheroKWN() {
         )}
       </AnimatePresence>
 
+      {/* ── MODALS GALLERY (Halaman Penuh) ── */}
       <AnimatePresence>
         {showGallery && (
-          <motion.div
-            initial={{ opacity: 0, y: "100%" }}
-            animate={{ opacity: 1, y: "0%" }}
-            exit={{ opacity: 0, y: "100%" }}
-            transition={{ duration: 0.7, ease: EXPO }}
-            className="fixed inset-0 z-[1000] bg-[#0a0a0a] overflow-y-auto overflow-x-hidden"
-          >
+          <motion.div initial={{ opacity: 0, y: "100%" }} animate={{ opacity: 1, y: "0%" }} exit={{ opacity: 0, y: "100%" }} transition={{ duration: 0.7, ease: EXPO }} className="fixed inset-0 z-[1000] bg-[#0a0a0a] overflow-y-auto overflow-x-hidden" data-lenis-prevent="true">
             <div className="fixed top-0 left-0 w-full p-8 md:p-12 flex justify-between items-center z-[1001] bg-gradient-to-b from-[#0a0a0a] to-transparent">
               <h2 className="text-white text-2xl font-bold tracking-tighter">DOKUMENTASI<span className="text-[#c0392b]">.</span></h2>
-              <button
-                onClick={() => setShowGallery(false)}
-                className="text-sm font-bold tracking-widest uppercase text-[#888] hover:text-white transition-colors"
-              >
-                Kembali
-              </button>
+              <button onClick={() => setShowGallery(false)} className="text-sm font-bold tracking-widest uppercase text-[#888] hover:text-white transition-colors">Kembali</button>
             </div>
 
             <div className="pt-32 pb-24 px-4 md:px-12 max-w-[1800px] mx-auto">
               <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-                {GALLERY_IMAGES.map((src, i) => (
+                {GALLERY_IMAGES.map((item, i) => (
                   <motion.div
                     key={i}
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: (i % 5) * 0.1, duration: 0.6 }}
-                    className="break-inside-avoid relative group overflow-hidden rounded-xl bg-white/5 backdrop-blur-md cursor-none"
+                    className="break-inside-avoid relative group overflow-hidden rounded-xl bg-white/5 backdrop-blur-md cursor-pointer"
                     onMouseEnter={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
+                    onClick={() => openPopup({ title: item.title, subtitle: `DOKUMENTASI 0${item.id}`, content: item.desc, img: item.img }, "#f2f2f2")}
                   >
-                    <img
-                      src={src}
-                      alt={`Dokumentasi ${i + 1}`}
-                      className="w-full h-auto object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
-                    />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/40">
-                      <span className="text-white text-xs tracking-[0.2em] font-bold border border-white/20 px-6 py-3 rounded-full backdrop-blur-sm">
+                    <img src={item.img} alt={item.title} className="w-full h-auto object-cover transition-all duration-[800ms] ease-out opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-105" />
+
+                    {/* Glassmorphism Overlay */}
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 bg-black/20 pointer-events-none">
+                      <span className="text-white text-xs tracking-[0.2em] font-bold border border-white/20 px-6 py-3 rounded-full bg-white/10 backdrop-blur-md shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
                         LIHAT DETAIL
                       </span>
                     </div>
@@ -1134,7 +753,6 @@ export default function DheroKWN() {
           </motion.div>
         )}
       </AnimatePresence>
-
     </div>
   );
 }
