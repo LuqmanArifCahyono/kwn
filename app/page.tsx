@@ -1,15 +1,16 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { 
-  motion, 
-  useMotionValue, 
-  useSpring, 
-  useScroll, 
-  useTransform, 
-  useInView, 
-  animate, 
-  AnimatePresence 
+import Lenis from "lenis";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useScroll,
+  useTransform,
+  useInView,
+  animate,
+  AnimatePresence
 } from "framer-motion";
 
 // ─── PALETTE ─────────────────────────────────────────────────────────────────
@@ -24,26 +25,26 @@ const REF_SITES = [
 ];
 
 const HERO_TEXTS = [
-  "Freedom of Speech.", 
-  "Kebebasan Berekspresi.", 
-  "Hak Berpendapat.", 
+  "Freedom of Speech.",
+  "Kebebasan Berekspresi.",
+  "Hak Berpendapat.",
   "Demokrasi Digital."
 ];
 
 const MATERI_CARDS = [
-  { id: "01", category: "HAK ASASI", title: "Hak Demokrasi", tags: "KEBEBASAN • EKSPRESI • PILAR NEGARA", desc: "Memahami esensi kebebasan berekspresi sebagai pilar utama negara hukum dan demokratis.", stat: "Pasal 28E", statLabel: "Landasan UUD 1945", img: "/materi-1.jpg", fullContent: "Di sini kamu bisa menulis materi lengkap tentang Hak Demokrasi. Jelaskan bagaimana kebebasan berekspresi menjadi indikator utama sehatnya sebuah negara demokrasi..." },
-  { id: "02", category: "HUKUM", title: "Batasan Etik", tags: "KRITIK • UJARAN KEBENCIAN • REGULASI", desc: "Garis tipis antara kritik yang membangun dengan ujaran kebencian atau pencemaran nama baik.", stat: "UU ITE", statLabel: "Regulasi Ruang Digital", img: "/materi-2.jpg", fullContent: "Isi materi lengkap mengenai Batasan Etik. Berikan studi kasus tentang perbedaan mengkritik kebijakan pemerintah vs ujaran kebencian..." },
-  { id: "03", category: "DIGITALISASI", title: "Era Disrupsi", tags: "SOSIAL MEDIA • PRIVASI • ANCAMAN", desc: "Tantangan baru berekspresi di media sosial, privasi, dan dinamika informasi tanpa batas.", stat: "204 Juta", statLabel: "Pengguna Internet RI", img: "/materi-3.jpg", fullContent: "Materi lengkap Era Disrupsi. Bahas tentang algoritma media sosial, echo chamber, dan bagaimana disinformasi menyebar..." },
-  { id: "04", category: "KEWAJIBAN", title: "Tanggung Jawab", tags: "INDIVIDU • KETERTIBAN • HAK ORANG LAIN", desc: "Bagaimana warga negara menyeimbangkan hak individu dengan ketertiban umum.", stat: "100%", statLabel: "Kewajiban Warga Negara", img: "/materi-4.jpg", fullContent: "Uraian materi Tanggung Jawab. Hak asasi manusia selalu dibarengi dengan kewajiban asasi. Bagaimana kita mengontrol diri sendiri di ruang publik..." },
+  { id: "01", category: "HAK ASASI", title: "Hak Demokrasi", tags: "KEBEBASAN • EKSPRESI • PILAR NEGARA", desc: "Memahami esensi kebebasan berekspresi sebagai pilar utama negara hukum dan demokratis.", stat: "Pasal 28E", statLabel: "Landasan UUD 1945", img: "/chaewon.jpg", fullContent: "Di sini kamu bisa menulis materi lengkap tentang Hak Demokrasi. Jelaskan bagaimana kebebasan berekspresi menjadi indikator utama sehatnya sebuah negara demokrasi..." },
+  { id: "02", category: "HUKUM", title: "Batasan Etik", tags: "KRITIK • UJARAN KEBENCIAN • REGULASI", desc: "Garis tipis antara kritik yang membangun dengan ujaran kebencian atau pencemaran nama baik.", stat: "UU ITE", statLabel: "Regulasi Ruang Digital", img: "/chaewon.jpg", fullContent: "Isi materi lengkap mengenai Batasan Etik. Berikan studi kasus tentang perbedaan mengkritik kebijakan pemerintah vs ujaran kebencian..." },
+  { id: "03", category: "DIGITALISASI", title: "Era Disrupsi", tags: "SOSIAL MEDIA • PRIVASI • ANCAMAN", desc: "Tantangan baru berekspresi di media sosial, privasi, dan dinamika informasi tanpa batas.", stat: "204 Juta", statLabel: "Pengguna Internet RI", img: "/chaewon.jpg", fullContent: "Materi lengkap Era Disrupsi. Bahas tentang algoritma media sosial, echo chamber, dan bagaimana disinformasi menyebar..." },
+  { id: "04", category: "KEWAJIBAN", title: "Tanggung Jawab", tags: "INDIVIDU • KETERTIBAN • HAK ORANG LAIN", desc: "Bagaimana warga negara menyeimbangkan hak individu dengan ketertiban umum.", stat: "100%", statLabel: "Kewajiban Warga Negara", img: "/chaewon.jpg", fullContent: "Uraian materi Tanggung Jawab. Hak asasi manusia selalu dibarengi dengan kewajiban asasi. Bagaimana kita mengontrol diri sendiri di ruang publik..." },
 ];
 
 const WAWANCARA = [
-  { id: "01", narsum: "Narasumber Pertama", role: "Aktivis Mahasiswa", desc: "Pandangan kritis dari sudut pandang pergerakan kampus terhadap regulasi negara yang dianggap membatasi ruang gerak demokrasi.", color: "#c0392b", img: "/narsum-1.jpg", fullContent: "Transkrip wawancara lengkap dengan narasumber pertama. (Ubah teks ini sesuai hasil wawancara kalian)." },
-  { id: "02", narsum: "Narasumber Kedua", role: "Pakar Hukum", desc: "Analisis dari sisi legalitas dan regulasi yang berlaku. Bagaimana undang-undang dirancang untuk melindungi sekaligus mengatur kebebasan.", color: "#f1c40f", img: "/narsum-2.jpg", fullContent: "Transkrip wawancara lengkap dengan pakar hukum. (Ubah teks ini sesuai hasil wawancara kalian)." },
-  { id: "03", narsum: "Narasumber Ketiga", role: "Jurnalis Independen", desc: "Realitas kebebasan pers di lapangan, ancaman somasi, dan tantangan menyampaikan fakta di era disinformasi.", color: "#c0392b", img: "/narsum-3.jpg", fullContent: "Transkrip wawancara lengkap dengan jurnalis. (Ubah teks ini sesuai hasil wawancara kalian)." },
-  { id: "04", narsum: "Narasumber Keempat", role: "Masyarakat Umum", desc: "Bagaimana masyarakat awam menyaring informasi, merasa takut untuk berpendapat, dan ketidaktahuan akan batasan hukum.", color: "#f1c40f", img: "/narsum-4.jpg", fullContent: "Transkrip wawancara lengkap dengan masyarakat umum. (Ubah teks ini sesuai hasil wawancara kalian)." },
-  { id: "05", narsum: "Narasumber Kelima", role: "Content Creator", desc: "Tantangan kebebasan berekspresi saat dihadapkan dengan algoritma platform digital dan pedoman komunitas yang ketat.", color: "#c0392b", img: "/narsum-5.jpg", fullContent: "Transkrip wawancara lengkap dengan content creator. (Ubah teks ini sesuai hasil wawancara kalian)." },
-  { id: "06", narsum: "Narasumber Keenam", role: "Aparatur Negara", desc: "Tantangan penegakan hukum dalam menjaga stabilitas dan ketertiban nasional di tengah euforia kebebasan berpendapat online.", color: "#f1c40f", img: "/narsum-6.jpg", fullContent: "Transkrip wawancara lengkap dengan aparatur negara. (Ubah teks ini sesuai hasil wawancara kalian)." },
+  { id: "01", narsum: "Narasumber Pertama", role: "Aktivis Mahasiswa", desc: "Pandangan kritis dari sudut pandang pergerakan kampus terhadap regulasi negara yang dianggap membatasi ruang gerak demokrasi.", color: "#c0392b", img: "/chaewon.jpg", fullContent: "Transkrip wawancara lengkap dengan narasumber pertama. (Ubah teks ini sesuai hasil wawancara kalian)." },
+  { id: "02", narsum: "Narasumber Kedua", role: "Pakar Hukum", desc: "Analisis dari sisi legalitas dan regulasi yang berlaku. Bagaimana undang-undang dirancang untuk melindungi sekaligus mengatur kebebasan.", color: "#f1c40f", img: "/chaewon.jpg", fullContent: "Transkrip wawancara lengkap dengan pakar hukum. (Ubah teks ini sesuai hasil wawancara kalian)." },
+  { id: "03", narsum: "Narasumber Ketiga", role: "Jurnalis Independen", desc: "Realitas kebebasan pers di lapangan, ancaman somasi, dan tantangan menyampaikan fakta di era disinformasi.", color: "#c0392b", img: "/chaewon.jpg", fullContent: "Transkrip wawancara lengkap dengan jurnalis. (Ubah teks ini sesuai hasil wawancara kalian)." },
+  { id: "04", narsum: "Narasumber Keempat", role: "Masyarakat Umum", desc: "Bagaimana masyarakat awam menyaring informasi, merasa takut untuk berpendapat, dan ketidaktahuan akan batasan hukum.", color: "#f1c40f", img: "/chaewon.jpg", fullContent: "Transkrip wawancara lengkap dengan masyarakat umum. (Ubah teks ini sesuai hasil wawancara kalian)." },
+  { id: "05", narsum: "Narasumber Kelima", role: "Content Creator", desc: "Tantangan kebebasan berekspresi saat dihadapkan dengan algoritma platform digital dan pedoman komunitas yang ketat.", color: "#c0392b", img: "/chaewon.jpg", fullContent: "Transkrip wawancara lengkap dengan content creator. (Ubah teks ini sesuai hasil wawancara kalian)." },
+  { id: "06", narsum: "Narasumber Keenam", role: "Aparatur Negara", desc: "Tantangan penegakan hukum dalam menjaga stabilitas dan ketertiban nasional di tengah euforia kebebasan berpendapat online.", color: "#f1c40f", img: "/chaewon.jpg", fullContent: "Transkrip wawancara lengkap dengan aparatur negara. (Ubah teks ini sesuai hasil wawancara kalian)." },
 ];
 
 const KUISIONER = [
@@ -54,18 +55,18 @@ const KUISIONER = [
 ];
 
 const PASAL = [
-  { title: "UUD 1945 Pasal 28E Ayat (3)", desc: "Setiap orang berhak atas kebebasan berserikat, berkumpul, dan mengeluarkan pendapat.", img: "/pasal-1.jpg", fullContent: "Pasal ini adalah fondasi utama konstitusi Indonesia yang menjamin hak asasi warga negaranya dalam beropini dan berserikat. Detail lebih lanjut dapat diubah di sini..." },
-  { title: "UU No. 39 Tahun 1999 (HAM)", desc: "Setiap orang berhak untuk menyampaikan pendapat di muka umum.", img: "/pasal-2.jpg", fullContent: "Undang-Undang Hak Asasi Manusia memberikan kerangka hukum yang lebih spesifik mengenai perlindungan hak warga negara. Detail lebih lanjut dapat diubah di sini..." },
-  { title: "UU ITE (Revisi Terakhir)", desc: "Mengatur tata cara dan batasan penyebaran informasi di ranah digital.", img: "/pasal-3.jpg", fullContent: "UU ITE sering kali menjadi pedang bermata dua. Di satu sisi melindungi dari kejahatan siber, di sisi lain pasal karetnya sering dikritik. Detail lebih lanjut dapat diubah di sini..." },
-  { title: "KUHP Baru", desc: "Pasal-pasal krusial terkait penghinaan terhadap lembaga negara.", img: "/pasal-4.jpg", fullContent: "Pembaruan KUHP memuat beberapa pasal krusial tentang penghinaan terhadap presiden dan lembaga negara yang memicu perdebatan publik. Detail lebih lanjut dapat diubah di sini..." },
+  { title: "UUD 1945 Pasal 28E Ayat (3)", desc: "Setiap orang berhak atas kebebasan berserikat, berkumpul, dan mengeluarkan pendapat.", img: "/chaewon.jpg", fullContent: "Pasal ini adalah fondasi utama konstitusi Indonesia yang menjamin hak asasi warga negaranya dalam beropini dan berserikat. Detail lebih lanjut dapat diubah di sini..." },
+  { title: "UU No. 39 Tahun 1999 (HAM)", desc: "Setiap orang berhak untuk menyampaikan pendapat di muka umum.", img: "/chaewon.jpg", fullContent: "Undang-Undang Hak Asasi Manusia memberikan kerangka hukum yang lebih spesifik mengenai perlindungan hak warga negara. Detail lebih lanjut dapat diubah di sini..." },
+  { title: "UU ITE (Revisi Terakhir)", desc: "Mengatur tata cara dan batasan penyebaran informasi di ranah digital.", img: "/chaewon.jpg", fullContent: "UU ITE sering kali menjadi pedang bermata dua. Di satu sisi melindungi dari kejahatan siber, di sisi lain pasal karetnya sering dikritik. Detail lebih lanjut dapat diubah di sini..." },
+  { title: "KUHP Baru", desc: "Pasal-pasal krusial terkait penghinaan terhadap lembaga negara.", img: "/chaewon.jpg", fullContent: "Pembaruan KUHP memuat beberapa pasal krusial tentang penghinaan terhadap presiden dan lembaga negara yang memicu perdebatan publik. Detail lebih lanjut dapat diubah di sini..." },
 ];
 
 const MEMBERS = [
-  { name: "Sebastian Kevin H.", role: "Developer / Concept", img: "/foto-kevin.jpg" },
+  { name: "Sebastian Kevin H.", role: "Developer / Concept", img: "/chaewon.jpg" },
   { name: "M. Luqman Arif C.", role: "Developer / Concept", img: "/tities.png" },
-  { name: "Rayya", role: "UI/UX & Design", img: "/foto-rayya.jpg" },
-  { name: "Qowwim", role: "Research & Data", img: "/foto-qowwim.jpg" },
-  { name: "Fauzan", role: "Content & Copywriter", img: "/foto-fauzan.jpg" },
+  { name: "Rayya", role: "UI/UX & Design", img: "/chaewon.jpg" },
+  { name: "Qowwim", role: "Research & Data", img: "/chaewon.jpg" },
+  { name: "Fauzan", role: "Content & Copywriter", img: "/chaewon.jpg" },
 ];
 
 const SCREENSHOTS = [
@@ -75,8 +76,8 @@ const SCREENSHOTS = [
 ];
 
 const GALLERY_IMAGES = [
-  "/ss-1.jpg", "/materi-1.jpg", "/materi-2.jpg", "/ss-2.jpg", 
-  "/ss-3.jpg", "/materi-3.jpg", "/materi-4.jpg", "/ss-1.jpg",
+  "/chaewon.jpg", "/chaewon.jpg", "/chaewon.jpg", "/chaewon.jpg",
+  "/chaewon.jpg", "/chaewon.jpg", "/chaewon.jpg", "/chaewon.jpg",
 ];
 
 // ─── EASING ──────────────────────────────────────────────────────────────────
@@ -145,6 +146,113 @@ function AnimatedStat({ value }: { value: string }) {
     </span>
   );
 }
+
+// ─── WAWANCARA CARD (PINNED STACK) ───────────────────────────────────────────
+function WawancaraPinnedCard({ item, i, total, scrollYProgress, setIsHovering, openPopup }: any) {
+  const totalIntervals = total - 1;
+  const startSlideIn = (i - 1) / totalIntervals;
+  const endSlideIn = i / totalIntervals;
+  const endScaleOut = (i + 1) / totalIntervals;
+
+  const y = useTransform(
+    scrollYProgress,
+    i === 0 ? [0, 1] : [startSlideIn, endSlideIn],
+    i === 0 ? ["0%", "0%"] : ["100%", "0%"]
+  );
+
+  const scale = useTransform(
+    scrollYProgress,
+    i === total - 1 ? [0, 1] : [endSlideIn, endScaleOut],
+    i === total - 1 ? [1, 1] : [1, 0.94]
+  );
+
+  const overlayOpacity = useTransform(
+    scrollYProgress,
+    i === total - 1 ? [0, 1] : [endSlideIn, endScaleOut],
+    i === total - 1 ? [0, 0] : [0, 0.6]
+  );
+
+  return (
+    <motion.div
+      className="absolute left-0 right-0 rounded-t-[36px] p-8 md:p-14 flex flex-col justify-start overflow-hidden group"
+      style={{
+        top: `${i * 40}px`, // Gap 40px antar tumpukan
+        bottom: "-20px", // Full sampai bawah layar (dikurangi border radius kalau ada, atau dilebihkan sedikit untuk menutupi layar)
+        zIndex: i + 1,
+        background: "#0a0a0a", // Hitam pekat sesuai permintaan
+        border: `1px solid rgba(255,255,255,0.05)`,
+        borderTop: `1px solid rgba(255,255,255,0.15)`,
+        boxShadow: "0 -20px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1)",
+        y,
+        scale,
+        transformOrigin: "top center"
+      }}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      {/* Dimming overlay saat kartu tertumpuk */}
+      <motion.div
+        className="absolute inset-0 bg-black pointer-events-none"
+        style={{ opacity: overlayOpacity, zIndex: 10, borderRadius: "36px" }}
+      />
+
+      {/* Progress Line */}
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: false }}
+        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+        style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(to right, ${item.color}, transparent)`, transformOrigin: "left", zIndex: 20 }}
+      />
+
+      {/* Tab Header (Akan tetap terlihat karena gap top adalah 40px) */}
+      <div className="absolute top-0 left-0 right-0 h-[40px] flex items-center px-8 md:px-14 border-b border-white/5" style={{ zIndex: 20 }}>
+        <div style={{ width: 6, height: 6, borderRadius: "50%", background: item.color, marginRight: 12, boxShadow: `0 0 10px ${item.color}` }} />
+        <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: "#666" }}>
+          NARSUM <span style={{ color: item.color }}>{item.id}</span> / 06
+        </span>
+      </div>
+
+      {/* Layout Grid: Content di kiri, Avatar di kanan */}
+      <div className="relative z-20 w-full mt-12 md:mt-20 flex flex-col-reverse md:flex-row items-start justify-between gap-12 md:gap-24">
+
+        {/* Teks Content */}
+        <div className="flex-1 max-w-2xl">
+          <h3 style={{ fontSize: "clamp(36px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.04em", color: "#fff", marginBottom: 20, lineHeight: 1 }}>
+            {item.narsum}
+          </h3>
+          <div className="flex items-center gap-4 mb-8">
+            <span style={{ display: "inline-block", padding: "8px 24px", borderRadius: 999, background: `${item.color}15`, border: `1px solid ${item.color}30`, color: item.color, fontSize: "12px", fontWeight: 700, letterSpacing: "0.05em" }}>
+              {item.role}
+            </span>
+          </div>
+          <p style={{ color: "#999", fontSize: "clamp(16px,1.2vw,20px)", fontWeight: 300, lineHeight: 1.7, marginBottom: 40, maxWidth: "90%" }}>
+            {item.desc}
+          </p>
+          <motion.button
+            onClick={() => openPopup({ title: item.narsum, subtitle: item.role, content: item.fullContent, img: item.img }, item.color)}
+            whileHover={{ scale: 1.05, background: item.color === "#c0392b" ? "#e74c3c" : "#f1c40f" }}
+            whileTap={{ scale: 0.95 }}
+            style={{ padding: "16px 36px", background: item.color, color: item.color === "#f1c40f" ? "#0a0a0a" : "#fff", fontWeight: 700, fontSize: "14px", borderRadius: 12, border: "none", cursor: "none" }}
+          >
+            Baca Selengkapnya
+          </motion.button>
+        </div>
+
+        {/* Avatar Image */}
+        <div className="w-40 h-40 md:w-72 md:h-72 flex-shrink-0 rounded-[32px] overflow-hidden" style={{ border: `1px solid ${item.color}30`, background: `${item.color}05`, boxShadow: `0 20px 40px -10px ${item.color}20` }}>
+          <img
+            src={item.img}
+            alt={item.narsum}
+            className="w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover:mix-blend-normal group-hover:opacity-100 transition-all duration-700 hover:scale-105"
+          />
+        </div>
+
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── NOISE TEXTURE SVG DATA URI ───────────────────────────────────────────────
 const NOISE_BG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E")`;
 
@@ -161,14 +269,58 @@ export default function DheroKWN() {
   // State untuk animasi teks Hero
   const [heroTextIdx, setHeroTextIdx] = useState(0);
 
+  const wawancaraContainerRef = useRef(null);
+  const wawancaraScroll = useScroll({
+    target: wawancaraContainerRef,
+    offset: ["start start", "end end"]
+  });
+
   // Cursor
   const cursorX = useMotionValue(-200);
   const cursorY = useMotionValue(-200);
   const cxs = useSpring(cursorX, { damping: 28, stiffness: 420, mass: 0.4 });
   const cys = useSpring(cursorY, { damping: 28, stiffness: 420, mass: 0.4 });
 
+  // 3D Parallax Values (Desktop)
+  const mouseXPct = useMotionValue(0);
+  const mouseYPct = useMotionValue(0);
+  const tiltX = useSpring(useTransform(mouseYPct, [-1, 1], [30, -30]), { damping: 40, stiffness: 150 });
+  const tiltY = useSpring(useTransform(mouseXPct, [-1, 1], [-30, 30]), { damping: 40, stiffness: 150 });
+  const tiltZ = useSpring(useTransform(mouseXPct, [-1, 1], [-8, 8]), { damping: 40, stiffness: 150 });
+  const moveX = useSpring(useTransform(mouseXPct, [-1, 1], ["-65%", "-35%"]), { damping: 40, stiffness: 150 });
+  const moveY = useSpring(useTransform(mouseYPct, [-1, 1], ["-65%", "-35%"]), { damping: 40, stiffness: 150 });
+
+  // Lenis Smooth Scroll
   useEffect(() => {
-    const move = (e) => { cursorX.set(e.clientX - 6); cursorY.set(e.clientY - 6); };
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      mouseMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    return () => lenis.destroy();
+  }, []);
+
+  useEffect(() => {
+    const move = (e) => {
+      cursorX.set(e.clientX - 6);
+      cursorY.set(e.clientY - 6);
+      if (window.innerWidth >= 768) {
+        mouseXPct.set((e.clientX / window.innerWidth) * 2 - 1);
+        mouseYPct.set((e.clientY / window.innerHeight) * 2 - 1);
+      }
+    };
     window.addEventListener("mousemove", move);
     return () => window.removeEventListener("mousemove", move);
   }, []);
@@ -206,9 +358,72 @@ export default function DheroKWN() {
   };
 
   return (
-    <div className="min-h-screen font-sans cursor-default relative selection:bg-red-900 selection:text-white" style={{ background: "#0a0a0a", color: "#f2f2f2" }}>
+    <div className="min-h-screen font-sans cursor-default relative selection:bg-red-900 selection:text-white w-full" style={{ background: "#0a0a0a", color: "#f2f2f2" }}>
       {/* Grain overlay */}
       <div className="fixed inset-0 pointer-events-none z-0 opacity-60" style={{ backgroundImage: NOISE_BG, backgroundSize: "200px 200px" }} />
+
+      {/* 3D Animated Justicia (Desktop Parallax) */}
+      <motion.div
+        className="hidden md:flex fixed top-1/2 left-1/2 w-[70vw] max-w-[900px] pointer-events-none z-0 items-center justify-center"
+        style={{
+          perspective: 1500,
+          x: moveX,
+          y: moveY,
+          rotateX: tiltX,
+          rotateY: tiltY,
+          rotateZ: tiltZ,
+          opacity: 0.15,
+          mixBlendMode: "luminosity"
+        }}
+        animate={{ scale: [1, 1.03, 0.97, 1] }}
+        transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <img src="/justicia.png" alt="Justicia Background" className="w-full h-auto object-contain drop-shadow-[0_0_100px_rgba(192,57,43,0.6)]" />
+      </motion.div>
+
+      {/* 3D Animated Justicia (Mobile Auto-float) */}
+      <motion.div
+        className="flex md:hidden fixed top-1/2 left-1/2 w-[140vw] max-w-[900px] opacity-[0.07] pointer-events-none z-0 mix-blend-luminosity items-center justify-center"
+        style={{ perspective: 1400, x: "-50%", y: "-50%" }}
+        animate={{
+          y: ["-50%", "-53%", "-50%"],
+          x: ["-50%", "-48%", "-50%"],
+          rotateX: [6, -6, 6],
+          rotateY: [-16, 16, -16],
+          rotateZ: [-3, 3, -3],
+          scale: [1, 1.06, 1]
+        }}
+        transition={{
+          duration: 22,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+      >
+        <img src="/justicia.png" alt="Justicia Background" className="w-full h-auto object-contain drop-shadow-[0_0_80px_rgba(192,57,43,0.6)]" />
+      </motion.div>
+
+      {/* Grid Pattern */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0 opacity-20"
+        style={{
+          backgroundImage: "linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+          maskImage: "radial-gradient(ellipse at center, black 10%, transparent 80%)",
+          WebkitMaskImage: "radial-gradient(ellipse at center, black 10%, transparent 80%)"
+        }}
+      />
+
+      {/* Background Glows (Animated) */}
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], opacity: [0.03, 0.06, 0.03] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        className="fixed top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-[#c0392b] blur-[120px] pointer-events-none z-0"
+      />
+      <motion.div
+        animate={{ scale: [1, 1.15, 1], opacity: [0.02, 0.05, 0.02] }}
+        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="fixed bottom-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-[#f1c40f] blur-[100px] pointer-events-none z-0"
+      />
 
       {/* ── Custom Cursor ── */}
       <motion.div
@@ -230,7 +445,7 @@ export default function DheroKWN() {
 
       {/* ── Navbar ── */}
       <motion.header
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 md:px-16"
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-16"
         animate={{
           paddingTop: scrolled ? "20px" : "32px",
           paddingBottom: scrolled ? "20px" : "32px",
@@ -278,7 +493,7 @@ export default function DheroKWN() {
 
         <motion.div
           style={{ y: heroY, opacity: heroOpacity }}
-          className="flex-1 flex flex-col items-center justify-center px-8 md:px-16 max-w-[1100px] mx-auto w-full text-center z-10"
+          className="flex-1 flex flex-col items-center justify-center px-6 md:px-16 max-w-[1100px] mx-auto w-full text-center z-10"
         >
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -354,7 +569,7 @@ export default function DheroKWN() {
 
       {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── FOKUS MATERI ── */}
-      <section className="px-8 md:px-16 py-32 md:py-48 max-w-[1600px] mx-auto" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+      <section className="px-6 md:px-16 py-24 md:py-48 max-w-[1600px] mx-auto" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <FadeUp className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
           <h2 style={{ fontSize: "clamp(40px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: "#f2f2f2" }}>
             Fokus<br /><span style={{ color: "#333" }}>Materi.</span>
@@ -381,15 +596,15 @@ export default function DheroKWN() {
                 onClick={() => openPopup({ title: card.title, subtitle: card.category, content: card.fullContent, img: card.img })}
                 onMouseEnter={() => setIsHovering(true)}
                 onMouseLeave={() => setIsHovering(false)}
-                className="w-full flex-shrink-0 snap-start flex flex-col md:flex-row gap-4 rounded-[28px] p-2 cursor-pointer transition-colors duration-300 group"
-                style={{ minWidth: "100%", background: "#111", border: "1px solid rgba(255,255,255,0.05)" }}
+                className="w-full flex-shrink-0 snap-start flex flex-col md:flex-row gap-4 rounded-[28px] p-2 cursor-pointer transition-all duration-500 group"
+                style={{ minWidth: "100%", background: "rgba(255, 255, 255, 0.03)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.08)" }}
               >
                 <div className="w-full md:w-[58%] rounded-[20px] relative overflow-hidden" style={{ background: "#1a1a1a", aspectRatio: "16/10" }}>
-                  <motion.img 
-                    src={card.img} 
-                    alt={card.title} 
-                    className="absolute inset-0 object-cover w-full h-full" 
-                    style={{ opacity: 0.3, mixBlendMode: "luminosity" }} 
+                  <motion.img
+                    src={card.img}
+                    alt={card.title}
+                    className="absolute inset-0 object-cover w-full h-full"
+                    style={{ opacity: 0.3, mixBlendMode: "luminosity" }}
                     whileHover={{ scale: 1.05, opacity: 0.5 }}
                     transition={{ duration: 0.8 }}
                   />
@@ -408,7 +623,7 @@ export default function DheroKWN() {
                   </div>
                 </div>
 
-                <div className="w-full md:w-[42%] p-8 md:p-12 flex flex-col justify-center relative">
+                <div className="w-full md:w-[42%] p-6 md:p-12 flex flex-col justify-center relative">
                   <div className="absolute top-8 right-8 w-10 h-10 rounded-full border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity transform group-hover:translate-x-0 -translate-x-4">
                     ↗
                   </div>
@@ -446,7 +661,7 @@ export default function DheroKWN() {
 
       {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── STATEMENT ── */}
-      <section className="px-8 md:px-16 min-h-[80vh] flex items-center justify-center relative overflow-hidden py-24" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
+      <section className="px-6 md:px-16 min-h-[80vh] flex items-center justify-center relative overflow-hidden py-24" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,rgba(192,57,43,0.05),transparent_70%)]" />
 
         <div className="max-w-[1100px] w-full z-10 text-center" onMouseEnter={() => setIsHovering(true)} onMouseLeave={() => setIsHovering(false)}>
@@ -462,10 +677,10 @@ export default function DheroKWN() {
                 whileHover={{ scale: 1.05, color: "#c0392b" }}
               >
                 kelompok mahasiswa
-                <motion.div 
-                  initial={{ scaleX: 0 }} 
-                  whileInView={{ scaleX: 1 }} 
-                  transition={{ duration: 1, delay: 0.5 }} 
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  whileInView={{ scaleX: 1 }}
+                  transition={{ duration: 1, delay: 0.5 }}
                   className="absolute -bottom-2 left-0 w-full h-[2px] bg-[#c0392b] origin-left"
                 />
               </motion.span>{" "}
@@ -482,88 +697,47 @@ export default function DheroKWN() {
       </section>
 
       {/* ════════════════════════════════════════════════════════════════ */}
-      {/* ── WAWANCARA ── */}
-      <section className="px-8 md:px-16 py-32" style={{ borderBottom: "1px solid rgba(255,255,255,0.06)", background: "#0a0a0a" }}>
-        <div className="max-w-[1200px] mx-auto">
-          <FadeUp className="mb-16">
-            <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#c0392b", border: "1px solid rgba(192,57,43,0.3)", background: "rgba(192,57,43,0.06)", borderRadius: 999, padding: "6px 16px", display: "inline-block", marginBottom: 16 }}>
-              DATA WAWANCARA
-            </span>
-            <h2 style={{ fontSize: "clamp(40px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: "#333" }}>
-              Insight &<br /><span style={{ color: "#f2f2f2" }}>Perspektif.</span>
-            </h2>
-          </FadeUp>
+      {/* ── WAWANCARA (PINNED STACK) ── */}
+      <section
+        ref={wawancaraContainerRef}
+        style={{ height: `${WAWANCARA.length * 100}vh`, background: "#0a0a0a", borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+        className="w-full relative"
+      >
+        <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden px-8 md:px-16">
+          <div className="max-w-[1200px] w-full mx-auto relative h-full flex flex-col justify-center pt-24 pb-12">
 
-          <div className="relative flex flex-col" style={{ paddingBottom: "10vh" }}>
-            {WAWANCARA.map((item, i) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-8%" }}
-                transition={{ duration: 0.75, ease: EXPO }}
-                className="sticky w-full rounded-[36px] p-8 md:p-14 flex flex-col justify-end overflow-hidden group"
-                style={{
-                  top: `calc(14vh + ${i * 20}px)`,
-                  height: "74vh",
-                  marginBottom: i !== WAWANCARA.length - 1 ? "28vh" : 0,
-                  zIndex: i + 1,
-                  background: "#111",
-                  border: `1px solid rgba(255,255,255,0.05)`,
-                  boxShadow: "0 -20px 60px rgba(0,0,0,0.7)",
-                }}
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-              >
-                <motion.div
-                  initial={{ scaleX: 0 }}
-                  whileInView={{ scaleX: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, delay: 0.2, ease: EXPO }}
-                  style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(to right, ${item.color}, transparent)`, transformOrigin: "left" }}
+            <FadeUp className="mb-8 flex-shrink-0 z-0 relative">
+              <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#c0392b", border: "1px solid rgba(192,57,43,0.3)", background: "rgba(192,57,43,0.06)", borderRadius: 999, padding: "6px 16px", display: "inline-block", marginBottom: 16 }}>
+                DATA WAWANCARA
+              </span>
+              <h2 style={{ fontSize: "clamp(40px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: "#333" }}>
+                Insight &<br /><span style={{ color: "#f2f2f2" }}>Perspektif.</span>
+              </h2>
+            </FadeUp>
+
+            <div className="relative w-full flex-grow mt-4">
+              {WAWANCARA.map((item, i) => (
+                <WawancaraPinnedCard
+                  key={item.id}
+                  item={item}
+                  i={i}
+                  total={WAWANCARA.length}
+                  scrollYProgress={wawancaraScroll.scrollYProgress}
+                  setIsHovering={setIsHovering}
+                  openPopup={openPopup}
                 />
+              ))}
+            </div>
 
-                <div style={{ position: "absolute", top: 32, left: 40, fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: "#333" }}>
-                  {item.id} / 06
-                </div>
-
-                {/* Avatar with Image replacing color block */}
-                <div className="absolute right-8 md:right-14 top-8 md:top-14 w-24 h-24 md:w-48 md:h-48 rounded-full overflow-hidden" style={{ border: `3px solid ${item.color}22`, background: `${item.color}10` }}>
-                  <img 
-                    src={item.img} 
-                    alt={item.narsum} 
-                    className="w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover:mix-blend-normal group-hover:opacity-100 transition-all duration-500" 
-                  />
-                </div>
-
-                <div className="relative z-10 max-w-2xl">
-                  <h3 style={{ fontSize: "clamp(28px,4vw,52px)", fontWeight: 700, letterSpacing: "-0.04em", color: item.color, marginBottom: 12, lineHeight: 1.1 }}>
-                    {item.narsum}
-                  </h3>
-                  <span style={{ display: "inline-block", padding: "6px 18px", borderRadius: 999, border: `1px solid ${item.color}40`, color: item.color, fontSize: "13px", fontWeight: 600, marginBottom: 20 }}>
-                    {item.role}
-                  </span>
-                  <p style={{ color: "#888", fontSize: "clamp(15px,1.2vw,18px)", fontWeight: 300, lineHeight: 1.7, marginBottom: 28 }}>
-                    {item.desc}
-                  </p>
-                  <motion.button
-                    onClick={() => openPopup({ title: item.narsum, subtitle: item.role, content: item.fullContent, img: item.img }, item.color)}
-                    whileHover={{ scale: 1.04, background: item.color === "#c0392b" ? "#e74c3c" : "#f1c40f" }}
-                    whileTap={{ scale: 0.97 }}
-                    style={{ padding: "12px 24px", background: item.color, color: item.color === "#f1c40f" ? "#0a0a0a" : "#fff", fontWeight: 700, fontSize: "13px", borderRadius: 10, border: "none", cursor: "none" }}
-                  >
-                    Selengkapnya
-                  </motion.button>
-                </div>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>
 
+
+
       {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── KUISIONER ── */}
-      <section className="px-8 md:px-16 py-32 md:py-48 max-w-[1200px] mx-auto">
+      <section className="px-6 md:px-16 py-24 md:py-48 max-w-[1200px] mx-auto">
         <FadeUp className="flex flex-col md:flex-row justify-between items-start md:items-center mb-20 gap-8">
           <div>
             <span style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#888", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", borderRadius: 999, padding: "6px 16px", marginBottom: 16 }}>
@@ -653,10 +827,10 @@ export default function DheroKWN() {
 
                   {/* Thumbnail Pasal */}
                   <div className="w-16 h-16 md:w-24 md:h-24 flex-shrink-0 rounded-xl overflow-hidden bg-[#111] border border-white/10 hidden sm:block">
-                    <img 
-                      src={p.img} 
-                      alt={p.title} 
-                      className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-300 mix-blend-luminosity group-hover:mix-blend-normal" 
+                    <img
+                      src={p.img}
+                      alt={p.title}
+                      className="w-full h-full object-cover opacity-50 group-hover:opacity-100 transition-opacity duration-300 mix-blend-luminosity group-hover:mix-blend-normal"
                     />
                   </div>
 
@@ -682,7 +856,7 @@ export default function DheroKWN() {
           </h2>
           <p className="mt-4 text-[#666] max-w-md mx-auto">Penggagas, peneliti, dan pengembang di balik proyek dokumentasi kebebasan berpendapat ini.</p>
         </FadeUp>
-        
+
         <div className="flex flex-wrap justify-center gap-x-8 gap-y-16">
           {MEMBERS.map((member, i) => (
             <motion.div
@@ -721,7 +895,7 @@ export default function DheroKWN() {
       {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── DOKUMENTASI ── */}
       <section
-        className="px-8 md:px-16 w-full flex items-center justify-center relative overflow-hidden"
+        className="px-6 md:px-16 w-full flex items-center justify-center relative overflow-hidden"
         style={{ minHeight: "100vh", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingTop: 96, paddingBottom: 48 }}
       >
         <div className="max-w-[1600px] w-full h-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
@@ -755,11 +929,19 @@ export default function DheroKWN() {
             onMouseEnter={() => setIsHovering(true)}
             onMouseLeave={() => setIsHovering(false)}
           >
-            <motion.div
-              className="flex flex-col gap-6 py-6"
-              animate={{ y: ["0%", "-50%"] }}
-              transition={{ duration: 22, repeat: Infinity, ease: "linear" }}
-            >
+            <style>{`
+              .marquee-vertical {
+                animation: scrollVertical 25s linear infinite;
+              }
+              .marquee-vertical:hover {
+                animation-play-state: paused;
+              }
+              @keyframes scrollVertical {
+                from { transform: translateY(0); }
+                to { transform: translateY(-50%); }
+              }
+            `}</style>
+            <div className="flex flex-col gap-6 py-6 marquee-vertical">
               {[...SCREENSHOTS, ...SCREENSHOTS, ...SCREENSHOTS, ...SCREENSHOTS].map((ss, idx) => (
                 <motion.div
                   key={`${ss.id}-${idx}`}
@@ -769,7 +951,7 @@ export default function DheroKWN() {
                   style={{ background: "#111", border: "1px solid rgba(255,255,255,0.05)", cursor: "none" }}
                 >
                   <div className="relative overflow-hidden rounded-[18px]" style={{ aspectRatio: "16/9", background: "#1a1a1a" }}>
-                    <img src={`/ss-${ss.id}.jpg`} alt="" className="object-cover w-full h-full" style={{ opacity: 0.3, transition: "opacity 0.8s ease" }} />
+                    <img src="/chaewon.jpg" alt="" className="object-cover w-full h-full" style={{ opacity: 0.3, transition: "opacity 0.8s ease" }} />
                     <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(10,10,10,0.3)" }}>
                       <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.25em", color: "#555", background: "#111", padding: "6px 16px", borderRadius: 999, border: "1px solid rgba(255,255,255,0.06)" }}>
                         SS 0{ss.id}
@@ -782,14 +964,14 @@ export default function DheroKWN() {
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* ════════════════════════════════════════════════════════════════ */}
       {/* ── FOOTER ── */}
-      <footer className="relative overflow-hidden" style={{ padding: "120px 32px 40px", background: "#050505" }}>
+      <footer className="relative overflow-hidden pt-24 md:pt-32 pb-10 px-6 md:px-8" style={{ background: "rgba(5, 5, 5, 0.2)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)" }}>
         <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#c0392b]/30 to-transparent" />
         <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-20 relative z-10">
           <div>
@@ -866,35 +1048,35 @@ export default function DheroKWN() {
               animate={{ y: 0, scale: 1 }}
               exit={{ y: 30, scale: 0.95, opacity: 0 }}
               transition={{ duration: 0.5, ease: EXPO }}
-              className="bg-[#111] border border-white/10 rounded-[32px] p-8 md:p-14 max-w-4xl w-full max-h-[85vh] overflow-y-auto relative shadow-2xl"
+              className="bg-[rgba(10,10,10,0.85)] backdrop-blur-3xl border border-white/10 rounded-[32px] p-6 md:p-14 max-w-4xl w-[95%] md:w-full max-h-[85vh] overflow-y-auto relative shadow-[0_0_80px_rgba(0,0,0,0.8)]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setPopupData(null)}
-                className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-black/50 hover:bg-white/20 text-white transition-colors z-20 backdrop-blur-sm"
+                className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/20 text-white transition-colors z-20 backdrop-blur-md"
               >
                 ✕
               </button>
 
               {/* Tampilan Gambar di dalam Popup (Banner Area) */}
               {popupData.img && (
-                <div className="w-full h-[200px] md:h-[320px] mb-8 rounded-2xl overflow-hidden relative border border-white/5">
+                <div className="w-full h-[200px] md:h-[320px] mb-8 rounded-3xl overflow-hidden relative border border-white/5 shadow-inner">
                   <img src={popupData.img} alt={popupData.title} className="w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-[#111]/40 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-[rgba(10,10,10,1)] via-[rgba(10,10,10,0.4)] to-transparent"></div>
                 </div>
               )}
 
               <div className="relative z-10 -mt-16 md:-mt-24 pt-4">
-                <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.2em", color: popupData.themeColor || "#c0392b", background: `${popupData.themeColor || "#c0392b"}15`, border: `1px solid ${popupData.themeColor || "#c0392b"}30`, borderRadius: 999, padding: "6px 16px", width: "fit-content", marginBottom: 24, display: "block" }}>
+                <span style={{ fontSize: "12px", fontWeight: 700, letterSpacing: "0.2em", color: popupData.themeColor || "#c0392b", background: `${popupData.themeColor || "#c0392b"}20`, border: `1px solid ${popupData.themeColor || "#c0392b"}40`, borderRadius: 999, padding: "8px 20px", width: "fit-content", marginBottom: 24, display: "block" }}>
                   {popupData.subtitle}
                 </span>
-                <h2 style={{ fontSize: "clamp(32px,5vw,64px)", fontWeight: 800, letterSpacing: "-0.04em", color: "#f2f2f2", marginBottom: 32, lineHeight: 1.1 }}>
+                <h2 style={{ fontSize: "clamp(36px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.04em", color: "#fdfdfd", marginBottom: 32, lineHeight: 1.05 }}>
                   {popupData.title}
                 </h2>
-                
-                <div className="w-full h-[1px] bg-white/10 mb-8" />
 
-                <div className="prose prose-invert prose-lg max-w-none text-[#999] leading-relaxed font-light">
+                <div className="w-full h-[1px] bg-gradient-to-r from-white/20 to-transparent mb-10" />
+
+                <div className="prose prose-invert prose-lg max-w-none text-[#aaa] leading-[1.8] font-light">
                   <p>{popupData.content}</p>
                 </div>
               </div>
@@ -931,13 +1113,13 @@ export default function DheroKWN() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: (i % 5) * 0.1, duration: 0.6 }}
-                    className="break-inside-avoid relative group overflow-hidden rounded-xl bg-[#111] cursor-none"
+                    className="break-inside-avoid relative group overflow-hidden rounded-xl bg-white/5 backdrop-blur-md cursor-none"
                     onMouseEnter={() => setIsHovering(true)}
                     onMouseLeave={() => setIsHovering(false)}
                   >
                     <img
                       src={src}
-                      alt={`Dokumentasi ${i+1}`}
+                      alt={`Dokumentasi ${i + 1}`}
                       className="w-full h-auto object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500"
                     />
                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/40">
