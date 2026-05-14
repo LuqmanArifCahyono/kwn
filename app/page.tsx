@@ -48,7 +48,7 @@ const WAWANCARA = [
 ];
 
 const KUISIONER = [
-  { value: "78%", label: "Merasa dibatasi saat beropini di Sosmed", color: "#c0392b" },
+  { value: "78%", label: "cok", color: "#c0392b" },
   { value: "65%", label: "Pernah menghapus postingan karena takut UU ITE", color: "#f1c40f" },
   { value: "82%", label: "Setuju butuh revisi regulasi hukum", color: "#c0392b" },
   { value: "90%", label: "Mendukung kebebasan berpendapat yang beretika", color: "#f1c40f" },
