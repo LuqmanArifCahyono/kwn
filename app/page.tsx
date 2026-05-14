@@ -177,9 +177,9 @@ function WawancaraPinnedCard({ item, i, total, scrollYProgress, setIsHovering, o
 
   return (
     <motion.div
-      className="absolute left-0 right-0 rounded-t-[36px] p-8 md:p-14 flex flex-col justify-start overflow-hidden group"
+      className="absolute left-0 right-0 rounded-t-[36px] p-6 md:p-14 flex flex-col justify-start overflow-hidden group"
       style={{
-        top: `${i * 40}px`,
+        top: `calc(${i} * min(5vh, 40px))`,
         bottom: "-20px",
         zIndex: i + 1,
         background: "#0a0a0a",
@@ -195,34 +195,27 @@ function WawancaraPinnedCard({ item, i, total, scrollYProgress, setIsHovering, o
       onMouseLeave={() => setIsHovering(false)}
       onClick={() => openPopup({ title: item.narsum, subtitle: item.role, content: item.fullContent, img: item.img }, item.color)}
     >
-      <motion.div
-        className="absolute inset-0 bg-black pointer-events-none"
-        style={{ opacity: overlayOpacity, zIndex: 10, borderRadius: "36px" }}
-      />
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: false }}
-        transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-        style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(to right, ${item.color}, transparent)`, transformOrigin: "left", zIndex: 20 }}
-      />
+      <motion.div className="absolute inset-0 bg-black pointer-events-none" style={{ opacity: overlayOpacity, zIndex: 10, borderRadius: "36px" }} />
+      <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: false }} transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }} style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(to right, ${item.color}, transparent)`, transformOrigin: "left", zIndex: 20 }} />
+      
       <div className="absolute top-0 left-0 right-0 h-[40px] flex items-center px-8 md:px-14 border-b border-white/5" style={{ zIndex: 20 }}>
         <div style={{ width: 6, height: 6, borderRadius: "50%", background: item.color, marginRight: 12, boxShadow: `0 0 10px ${item.color}` }} />
         <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: "#666" }}>
           NARSUM <span style={{ color: item.color }}>{item.id}</span> / 06
         </span>
       </div>
-      <div className="relative z-20 w-full mt-12 md:mt-20 flex flex-col-reverse md:flex-row items-start justify-between gap-12 md:gap-24">
+
+      <div className="relative z-20 w-full mt-10 md:mt-12 flex-1 overflow-y-auto pb-16 flex flex-col-reverse md:flex-row items-start justify-between gap-8 md:gap-16 scrollbar-hide" style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
         <div className="flex-1 max-w-2xl">
-          <h3 style={{ fontSize: "clamp(36px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.04em", color: "#fff", marginBottom: 20, lineHeight: 1 }}>
+          <h3 style={{ fontSize: "clamp(32px,4vw,64px)", fontWeight: 800, letterSpacing: "-0.04em", color: "#fff", marginBottom: 16, lineHeight: 1 }}>
             {item.narsum}
           </h3>
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex items-center gap-4 mb-6">
             <span style={{ display: "inline-block", padding: "8px 24px", borderRadius: 999, background: `${item.color}15`, border: `1px solid ${item.color}30`, color: item.color, fontSize: "12px", fontWeight: 700, letterSpacing: "0.05em" }}>
               {item.role}
             </span>
           </div>
-          <p style={{ color: "#999", fontSize: "clamp(16px,1.2vw,20px)", fontWeight: 300, lineHeight: 1.7, marginBottom: 40, maxWidth: "90%" }}>
+          <p style={{ color: "#999", fontSize: "clamp(15px,1.1vw,18px)", fontWeight: 300, lineHeight: 1.7, marginBottom: 32, maxWidth: "90%" }}>
             {item.desc}
           </p>
           <motion.button
@@ -232,17 +225,13 @@ function WawancaraPinnedCard({ item, i, total, scrollYProgress, setIsHovering, o
             }}
             whileHover={{ scale: 1.05, background: item.color === "#c0392b" ? "#e74c3c" : "#f1c40f" }}
             whileTap={{ scale: 0.95 }}
-            style={{ padding: "16px 36px", background: item.color, color: item.color === "#f1c40f" ? "#0a0a0a" : "#fff", fontWeight: 700, fontSize: "14px", borderRadius: 12, border: "none", cursor: "none" }}
+            style={{ padding: "14px 32px", background: item.color, color: item.color === "#f1c40f" ? "#0a0a0a" : "#fff", fontWeight: 700, fontSize: "14px", borderRadius: 12, border: "none", cursor: "pointer" }}
           >
             Baca Selengkapnya
           </motion.button>
         </div>
-        <div className="w-40 h-40 md:w-72 md:h-72 flex-shrink-0 rounded-[32px] overflow-hidden group/img" style={{ border: `1px solid ${item.color}30`, background: `${item.color}05`, boxShadow: `0 20px 40px -10px ${item.color}20` }}>
-          <img
-            src={item.img}
-            alt={item.narsum}
-            className="w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover/img:mix-blend-normal group-hover/img:opacity-100 transition-all duration-700 hover:scale-105"
-          />
+        <div className="w-32 h-32 md:w-64 md:h-64 flex-shrink-0 rounded-[28px] overflow-hidden group/img" style={{ border: `1px solid ${item.color}30`, background: `${item.color}05`, boxShadow: `0 20px 40px -10px ${item.color}20` }}>
+          <img src={item.img} alt={item.narsum} className="w-full h-full object-cover opacity-60 mix-blend-luminosity group-hover/img:mix-blend-normal group-hover/img:opacity-100 transition-all duration-700 hover:scale-105" />
         </div>
       </div>
     </motion.div>
@@ -253,9 +242,9 @@ function WawancaraPinnedCard({ item, i, total, scrollYProgress, setIsHovering, o
 export default function DheroKWN() {
   const [scrolled, setScrolled] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
-  const carouselRef = useRef(null);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
-  const [popupData, setPopupData] = useState(null);
+  const [popupData, setPopupData] = useState<any>(null);
   const [showGallery, setShowGallery] = useState(false);
   const [heroTextIdx, setHeroTextIdx] = useState(0);
 
@@ -289,7 +278,7 @@ export default function DheroKWN() {
       smoothTouch: false,
       touchMultiplier: 2,
     });
-    function raf(time) {
+    function raf(time: number) {
       lenis.raf(time);
       requestAnimationFrame(raf);
     }
@@ -298,7 +287,7 @@ export default function DheroKWN() {
   }, []);
 
   useEffect(() => {
-    const move = (e) => {
+    const move = (e: MouseEvent) => {
       if (window.innerWidth >= 768) {
         cursorX.set(e.clientX - 6);
         cursorY.set(e.clientY - 6);
@@ -338,7 +327,7 @@ export default function DheroKWN() {
   const scrollLeft = () => carouselRef.current?.scrollBy({ left: -(carouselRef.current.offsetWidth + 32), behavior: "smooth" });
   const scrollRight = () => carouselRef.current?.scrollBy({ left: carouselRef.current.offsetWidth + 32, behavior: "smooth" });
 
-  const openPopup = (data, color = "#c0392b") => {
+  const openPopup = (data: any, color = "#c0392b") => {
     setPopupData({ ...data, themeColor: color });
   };
 
@@ -358,12 +347,12 @@ export default function DheroKWN() {
 
       {/* 3D Animated Justicia (Mobile) */}
       <motion.div
-        className="flex md:hidden fixed top-1/2 left-1/2 w-[140vw] max-w-[900px] opacity-[0.07] pointer-events-none z-0 mix-blend-luminosity items-center justify-center"
+        className="flex md:hidden fixed top-1/2 left-1/2 w-[140vw] max-w-[900px] opacity-[0.05] pointer-events-none z-0 items-center justify-center"
         style={{ perspective: 1400, x: "-50%", y: "-50%", willChange: "transform" }}
-        animate={{ y: ["-50%", "-53%", "-50%"], x: ["-50%", "-48%", "-50%"], rotateX: [6, -6, 6], rotateY: [-16, 16, -16], rotateZ: [-3, 3, -3], scale: [1, 1.06, 1] }}
+        animate={{ y: ["-50%", "-53%", "-50%"], x: ["-50%", "-48%", "-50%"], rotateX: [3, -3, 3], rotateY: [-8, 8, -8], scale: [1, 1.03, 1] }}
         transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
       >
-        <img src="/justicia.png" alt="Justicia Background" className="w-full h-auto object-contain drop-shadow-[0_0_80px_rgba(192,57,43,0.6)]" />
+        <img src="/justicia.png" alt="Justicia Background" className="w-full h-auto object-contain grayscale" />
       </motion.div>
 
       <div
@@ -492,19 +481,21 @@ export default function DheroKWN() {
         </div>
       </section>
 
-      {/* ── WAWANCARA (PINNED STACK) ── */}
-      <section ref={wawancaraContainerRef} style={{ height: `${WAWANCARA.length * 100}vh`, background: "#0a0a0a", borderBottom: "1px solid rgba(255,255,255,0.06)" }} className="w-full relative">
-        <div className="sticky top-0 h-screen w-full flex flex-col justify-center overflow-hidden px-8 md:px-16">
-          <div className="max-w-[1200px] w-full mx-auto relative h-full flex flex-col justify-center pt-24 pb-12">
-            <FadeUp className="mb-8 flex-shrink-0 z-0 relative">
-              <span style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.22em", color: "#c0392b", border: "1px solid rgba(192,57,43,0.3)", background: "rgba(192,57,43,0.06)", borderRadius: 999, padding: "6px 16px", display: "inline-block", marginBottom: 16 }}>DATA WAWANCARA</span>
-              <h2 style={{ fontSize: "clamp(40px,5vw,72px)", fontWeight: 800, letterSpacing: "-0.05em", lineHeight: 1, color: "#333" }}>Insight &<br /><span style={{ color: "#f2f2f2" }}>Perspektif.</span></h2>
-            </FadeUp>
-            <div className="relative w-full flex-grow mt-4">
-              {WAWANCARA.map((item, i) => (
-                <WawancaraPinnedCard key={item.id} item={item} i={i} total={WAWANCARA.length} scrollYProgress={wawancaraScroll.scrollYProgress} setIsHovering={setIsHovering} openPopup={openPopup} />
-              ))}
-            </div>
+      {/* ── WAWANCARA (PINNED STACK) - DIPERBAIKI SINTAKSNYA ── */}
+      <section className="relative h-[400vh]" ref={wawancaraContainerRef}>
+        <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center px-6 md:px-16 pt-24 md:pt-32">
+          <div className="relative w-full max-w-[1200px] mx-auto h-[70vh]">
+            {WAWANCARA.map((item, i) => (
+              <WawancaraPinnedCard
+                key={item.id}
+                item={item}
+                i={i}
+                total={WAWANCARA.length}
+                scrollYProgress={wawancaraScroll.scrollYProgress}
+                setIsHovering={setIsHovering}
+                openPopup={openPopup}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -690,7 +681,6 @@ export default function DheroKWN() {
       {/* ── MODALS / POPUPS (Utama) ── */}
       <AnimatePresence>
         {popupData && (
-          // Z-INDEX DINAIPKAN MENJADI 1100 AGAR SELALU DI ATAS GALLERY
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.4 }} className="fixed inset-0 z-[1100] flex items-center justify-center p-4 md:p-12 bg-black/80 backdrop-blur-md" onClick={() => setPopupData(null)}>
             <motion.div initial={{ y: 50, scale: 0.95 }} animate={{ y: 0, scale: 1 }} exit={{ y: 30, scale: 0.95, opacity: 0 }} transition={{ duration: 0.5, ease: EXPO }} className="bg-[rgba(10,10,10,0.85)] backdrop-blur-3xl border border-white/10 rounded-[32px] p-6 md:p-14 max-w-4xl w-[95%] md:w-full max-h-[85vh] overflow-y-auto relative shadow-[0_0_80px_rgba(0,0,0,0.8)]" onClick={(e) => e.stopPropagation()} data-lenis-prevent="true">
               <button onClick={() => setPopupData(null)} className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/20 text-white transition-colors z-20 backdrop-blur-md">✕</button>
